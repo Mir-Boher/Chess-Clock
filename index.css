@@ -6,12 +6,51 @@
   font-family: "Share Tech Mono", monospace;
 }
 
-body {
+#main-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  flex: 1;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+#main-page .timer-component {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
 }
-.volume-off {
+#main-page .timer-component .moves {
+  align-self: flex-end;
+  margin-right: 1rem;
+}
+#main-page .timer-component .time {
+  font-size: 7.5rem;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+#main-page .setting-bar {
+  width: 100%;
+  border: 1px solid black;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0 2rem 0;
+}
+#main-page .setting-bar .pause-icon {
+  flex: 1;
+}
+#main-page .setting-bar .volume-off-icon {
   display: none;
 }
+#main-page #timer-component-one {
+  rotate: 180deg;
+}
+
+/*# sourceMappingURL=index.css.map */
