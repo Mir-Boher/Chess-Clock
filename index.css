@@ -23,6 +23,23 @@
   flex-direction: column;
   flex: 1;
   position: relative;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#main-page .timer-component:focus-visible {
+  outline: 2px solid #555;
+  outline-offset: 2px;
 }
 #main-page .timer-component .moves {
   align-self: flex-end;
@@ -37,13 +54,21 @@
 }
 #main-page .setting-bar {
   width: 100%;
-  border: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 1rem;
   display: flex;
   gap: 1rem;
   margin: 2rem 0 2rem 0;
 }
+#main-page .setting-bar .material-symbols-outlined {
+  cursor: pointer;
+}
 #main-page .setting-bar .pause-icon {
+  flex: 1;
+}
+#main-page .setting-bar .resume-icon {
+  display: none;
   flex: 1;
 }
 #main-page .setting-bar .volume-off-icon {
