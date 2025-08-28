@@ -4,6 +4,11 @@ const playerOneTimer = document.getElementById("time-one");
 const playerTwoTimer = document.getElementById("time-two");
 const playerOneMoves = document.getElementById("moves-one");
 const playerTwoMoves = document.getElementById("moves-two");
+const pauseBtn = document.querySelector(".pause-icon");
+const resumeBtn = document.querySelector(".resume-icon");
+const resetBtn = document.querySelector(".replay-icon");
+const volumeOnBtn = document.querySelector(".volume-on-icon");
+const volumeOffBtn = document.querySelector(".volume-off-icon");
 
 // State
 let currentPlayer = null; // 'one' | 'two'
@@ -13,13 +18,17 @@ let playerTwoMoveCount = 0;
 let movesSwitch = false;
 let playerOneTime = 0.2 * 60; // seconds
 let playerTwoTime = 0.2 * 60; // seconds
+let isMuted = false;
 
+const sounds = {
+  click: new Audio("assets/sounds/click.wav"),
+  resume: new Audio("assets/sounds/resume.wav"),
+};
 // Config: set to true to show the next player's timer decrement immediately (no 1s visual delay)
 const IMMEDIATE_FIRST_TICK = true;
 
 function startTurn(nextPlayer) {
   if (isGameOver()) return; // don't start new turns after game end
-  if (currentPlayer === nextPlayer) return; // already that player's turn
   clearInterval(timer);
   currentPlayer = nextPlayer;
 
@@ -57,6 +66,7 @@ function startTurn(nextPlayer) {
 
 playerOne.addEventListener("click", () => {
   if (isGameOver()) return;
+  playSound("click");
   if (currentPlayer === null || currentPlayer === "one") {
     if (movesSwitch === true) {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
@@ -68,6 +78,7 @@ playerOne.addEventListener("click", () => {
 
 playerTwo.addEventListener("click", () => {
   if (isGameOver()) return;
+  playSound("click");
   if (currentPlayer === null || currentPlayer === "two") {
     if (movesSwitch === true) {
       playerTwoMoves.textContent = `Moves: ${++playerTwoMoveCount}`;
@@ -95,3 +106,55 @@ function updateTimer() {
     .padStart(2, "0")}`;
 }
 updateTimer();
+
+pauseBtn.addEventListener("click", () => {
+  resumeBtn.style.display = "block";
+  pauseBtn.style.display = "none";
+  clearInterval(timer);
+  playSound("resume");
+});
+
+resumeBtn.addEventListener("click", () => {
+  resumeBtn.style.display = "none";
+  pauseBtn.style.display = "block";
+  startTurn(currentPlayer);
+  playSound("resume");
+});
+
+volumeOnBtn.addEventListener("click", () => {
+  isMuted = true;
+  volumeOnBtn.style.display = "none";
+  volumeOffBtn.style.display = "block";
+});
+volumeOffBtn.addEventListener("click", () => {
+  isMuted = false;
+  volumeOnBtn.style.display = "block";
+  volumeOffBtn.style.display = "none";
+});
+
+resetBtn.addEventListener("click", () => {
+  clearInterval(timer);
+  currentPlayer = null;
+  playerOneTime = 0.2 * 60;
+  playerTwoTime = 0.2 * 60;
+  movesSwitch = null;
+  playerTwoMoveCount = 0;
+  playerOneMoveCount = 0;
+  playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
+  playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
+  resumeBtn.style.display = "none";
+  pauseBtn.style.display = "block";
+  playerOne.style.background = "white";
+  playerTwo.style.background = "white";
+  updateTimer();
+});
+
+function playSound(name) {
+  if (!isMuted) {
+    const sound = sounds[name];
+    if (sound) {
+      sound.currentTime = 0; // rewind so it plays from start
+      sound.play();
+    }
+  }
+}
