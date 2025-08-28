@@ -1,0 +1,21 @@
+{
+  "name": "Chess Clock",
+  "short_name": "ChessClock",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#222222",
+  "description": "A simple chess clock app.",
+  "icons": [
+    {
+      "src": "assets/sounds/icons/N.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/sounds/icons/N.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

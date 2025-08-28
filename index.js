@@ -23,6 +23,7 @@ let isMuted = false;
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
   resume: new Audio("assets/sounds/resume.wav"),
+  low: new Audio("assets/sounds/femalelow.wav"),
 };
 // Config: set to true to show the next player's timer decrement immediately (no 1s visual delay)
 const IMMEDIATE_FIRST_TICK = true;
@@ -51,13 +52,23 @@ function startTurn(nextPlayer) {
       if (playerOneTime > 0) playerOneTime--;
       if (playerOneTime <= 0) {
         playerOne.style.background = "red";
+        playerOne.classList.remove("blink");
         clearInterval(timer);
+      }
+      if (playerOneTime > 0 && playerOneTime <= 10) {
+        playSound("low");
+        playerOne.classList.add("blink");
       }
     } else if (currentPlayer === "two") {
       if (playerTwoTime > 0) playerTwoTime--;
       if (playerTwoTime <= 0) {
         playerTwo.style.background = "red";
+        playerTwo.classList.remove("blink");
         clearInterval(timer);
+      }
+      if (playerTwoTime > 0 && playerTwoTime <= 10) {
+        playSound("low");
+        playerTwo.classList.add("blink");
       }
     }
     updateTimer();
@@ -66,8 +77,10 @@ function startTurn(nextPlayer) {
 
 playerOne.addEventListener("click", () => {
   if (isGameOver()) return;
-  playSound("click");
+
   if (currentPlayer === null || currentPlayer === "one") {
+    playerOne.classList.remove("blink");
+    playSound("click");
     if (movesSwitch === true) {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
     }
@@ -78,8 +91,10 @@ playerOne.addEventListener("click", () => {
 
 playerTwo.addEventListener("click", () => {
   if (isGameOver()) return;
-  playSound("click");
+
   if (currentPlayer === null || currentPlayer === "two") {
+    playerTwo.classList.remove("blink");
+    playSound("click");
     if (movesSwitch === true) {
       playerTwoMoves.textContent = `Moves: ${++playerTwoMoveCount}`;
     }
@@ -137,7 +152,7 @@ resetBtn.addEventListener("click", () => {
   currentPlayer = null;
   playerOneTime = 0.2 * 60;
   playerTwoTime = 0.2 * 60;
-  movesSwitch = null;
+  movesSwitch = false;
   playerTwoMoveCount = 0;
   playerOneMoveCount = 0;
   playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
@@ -157,4 +172,11 @@ function playSound(name) {
       sound.play();
     }
   }
+}
+
+//Registering the service worker
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js");
+  });
 }
