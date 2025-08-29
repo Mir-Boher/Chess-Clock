@@ -18,6 +18,9 @@
       <div class="timer-component" id="timer-component-one">
         <div class="moves" id="moves-one">Moves: 0</div>
         <div class="time" id="time-one"></div>
+        <span class="material-symbols-outlined settings-one">
+          instant_mix
+        </span>
       </div>
       <div class="setting-bar">
         <span class="material-symbols-outlined replay-icon">replay</span>
@@ -35,6 +38,115 @@
       <div class="timer-component" id="timer-component-two">
         <div class="moves" id="moves-two">Moves: 0</div>
         <div class="time" id="time-two"></div>
+        <span class="material-symbols-outlined settings-two">
+          instant_mix
+        </span>
+      </div>
+    </section>
+    <section class="modal-overlay" id="modal-overlay">
+      <div class="modal" id="modal">
+        <button class="close-btn close" id="close-btn">&times;</button>
+
+        <div class="modal-header">
+          <h2 class="modal-title">Settings</h2>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">Game Time</label>
+          <div class="time-inputs">
+            <div class="time-input-group">
+              <input
+                type="number"
+                class="time-input"
+                value="0"
+                min="0"
+                max="23"
+                id="hours"
+              />
+              <div class="time-label">Hours</div>
+            </div>
+            <span class="time-separator">:</span>
+            <div class="time-input-group">
+              <input
+                type="number"
+                class="time-input"
+                value="0"
+                min="0"
+                max="59"
+                id="minutes"
+              />
+              <div class="time-label">Minutes</div>
+            </div>
+            <span class="time-separator">:</span>
+            <div class="time-input-group">
+              <input
+                type="number"
+                class="time-input"
+                value="0"
+                min="0"
+                max="59"
+                id="seconds"
+              />
+              <div class="time-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="input-row">
+            <label class="setting-label" for="increment">Increment</label>
+            <input
+              type="number"
+              class="increment-input"
+              value="0"
+              min="0"
+              max="60"
+              id="increment"
+            />
+            <span style="color: #666; font-size: 12px">sec</span>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="input-row">
+            <label class="setting-label" for="lowTimeAlert"
+              >Low Time Alert</label
+            >
+            <input
+              type="number"
+              class="increment-input"
+              value="10"
+              min="1"
+              max="300"
+              id="lowTimeAlert"
+            />
+            <span style="color: #666; font-size: 12px">sec</span>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="switch-container">
+            <div class="switch-group">
+              <span class="switch-label">Sound</span>
+              <label class="switch">
+                <input type="checkbox" checked id="soundToggle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="switch-group">
+              <span class="switch-label">Background color</span>
+              <label class="switch">
+                <input type="checkbox" checked id="bgAlertToggle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-cancel close">Cancel</button>
+          <button class="btn btn-save" id="save-btn">Save</button>
+        </div>
       </div>
     </section>
   </body>

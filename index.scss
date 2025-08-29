@@ -63,6 +63,257 @@
     rotate: 180deg;
   }
 }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  .modal {
+    background: #ffffff;
+    border: 2px solid #000000;
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: modalSlideIn 0.2s ease-out;
+    .modal-header {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #000000;
+      .modal-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+    }
+    .setting-group {
+      margin-bottom: 20px;
+      .setting-label {
+        display: block;
+        color: #000000;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .time-inputs {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.setting-label {
+  display: block;
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.time-inputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-input {
+  width: 60px;
+  padding: 8px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Share Tech Mono", monospace;
+  font-weight: bold;
+}
+
+.time-input:focus {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.time-separator {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 4px;
+}
+
+.time-label {
+  font-size: 11px;
+  color: #666666;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.increment-input {
+  width: 80px;
+  padding: 8px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Share Tech Mono", monospace;
+  font-weight: bold;
+}
+
+.increment-input:focus {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.switch-container {
+  border: 1px solid #cccccc;
+  padding: 16px;
+}
+
+.switch-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.switch-label {
+  color: #000000;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cccccc;
+  transition: 0.2s;
+  border: 2px solid #000000;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #000000;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background-color: #ffffff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: "Share Tech Mono", monospace;
+  transition: all 0.1s ease;
+}
+.btn-save {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.btn:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #000000;
+  font-size: 40px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close-btn:hover {
+  color: #666666;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-row .setting-label {
+  margin-bottom: 0;
+  min-width: 120px;
+}
+
 .blink {
   position: relative;
   z-index: 0;

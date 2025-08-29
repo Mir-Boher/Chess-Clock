@@ -9,6 +9,14 @@ const resumeBtn = document.querySelector(".resume-icon");
 const resetBtn = document.querySelector(".replay-icon");
 const volumeOnBtn = document.querySelector(".volume-on-icon");
 const volumeOffBtn = document.querySelector(".volume-off-icon");
+const modalOverlay = document.getElementById("modal-overlay");
+const closeBtn = document.querySelectorAll(".close");
+const playerOneSettingsBtn = document.querySelector(".settings-one");
+const playerTwoSettingsBtn = document.querySelector(".settings-two");
+const settingsHours = document.getElementById("hours");
+const settingsMinutes = document.getElementById("minutes");
+const settingsSeconds = document.getElementById("seconds");
+const saveSettings = document.getElementById("save-btn");
 
 // State
 let currentPlayer = null; // 'one' | 'two'
@@ -16,11 +24,12 @@ let timer = null;
 let playerOneMoveCount = 0;
 let playerTwoMoveCount = 0;
 let movesSwitch = false;
-let playerOneTime = 0.2 * 60; // seconds
-let playerTwoTime = 0.2 * 60; // seconds
+let playerOneTime = 2 * 60; // seconds
+let playerTwoTime = 2 * 60; // seconds
 let isMuted = false;
 let playerOneMs = 0; // to track secs in millisecs
 let playerTwoMs = 0;
+let settingsTarget = null; // one or two
 
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
@@ -83,7 +92,8 @@ function startTurn(nextPlayer) {
   }, 1000);
 }
 
-playerOne.addEventListener("click", () => {
+playerOne.addEventListener("click", (e) => {
+  if (e.target.closest(".settings-one")) return;
   if (isGameOver()) return;
 
   if (currentPlayer === null || currentPlayer === "one") {
@@ -101,7 +111,8 @@ playerOne.addEventListener("click", () => {
   }
 });
 
-playerTwo.addEventListener("click", () => {
+playerTwo.addEventListener("click", (e) => {
+  if (e.target.closest(".settings-two")) return;
   if (isGameOver()) return;
 
   if (currentPlayer === null || currentPlayer === "two") {
@@ -182,8 +193,8 @@ resetBtn.addEventListener("click", () => {
   playerTwo.classList.remove("blink");
   playerOne.classList.remove("blink");
   currentPlayer = null;
-  playerOneTime = 0.2 * 60;
-  playerTwoTime = 0.2 * 60;
+  playerOneTime = 2 * 60;
+  playerTwoTime = 2 * 60;
   movesSwitch = false;
   playerTwoMoveCount = 0;
   playerOneMoveCount = 0;
@@ -194,6 +205,38 @@ resetBtn.addEventListener("click", () => {
   playerOne.style.background = "white";
   playerTwo.style.background = "white";
   updateTimer();
+});
+
+playerOneSettingsBtn.addEventListener("click", () => {
+  settingsTarget = "one";
+  modalOverlay.style.display = "block";
+  clearInterval(timer);
+});
+playerTwoSettingsBtn.addEventListener("click", () => {
+  settingsTarget = "two";
+  modalOverlay.style.display = "block";
+  clearInterval(timer);
+});
+//There are two elements in html that closes the modal
+closeBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    modalOverlay.style.display = "none";
+  });
+});
+
+saveSettings.addEventListener("click", () => {
+  const hours = parseInt(settingsHours.value) || 0;
+  const minutes = parseInt(settingsMinutes.value) || 0;
+  const seconds = parseInt(settingsSeconds.value) || 0;
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+  if (settingsTarget === "one") {
+    playerOneTime = totalSeconds;
+  } else if (settingsTarget === "two") {
+    playerTwoTime = totalSeconds;
+  }
+  updateTimer();
+  modalOverlay.style.display = "none";
 });
 
 function playSound(name) {
