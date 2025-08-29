@@ -19,6 +19,8 @@ let movesSwitch = false;
 let playerOneTime = 0.2 * 60; // seconds
 let playerTwoTime = 0.2 * 60; // seconds
 let isMuted = false;
+let playerOneMs = 0; // to track secs in millisecs
+let playerTwoMs = 0;
 
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
@@ -37,8 +39,16 @@ function startTurn(nextPlayer) {
   if (IMMEDIATE_FIRST_TICK) {
     if (nextPlayer === "one") {
       if (playerOneTime > 0) playerOneTime--;
+      if (playerOneTime > 0 && playerOneTime <= 10) {
+        playerOne.classList.add("blink");
+        playSound("low");
+      }
     } else {
       if (playerTwoTime > 0) playerTwoTime--;
+      if (playerTwoTime > 0 && playerTwoTime <= 10) {
+        playerTwo.classList.add("blink");
+        playSound("low");
+      }
     }
     updateTimer();
   }
@@ -51,7 +61,6 @@ function startTurn(nextPlayer) {
     if (currentPlayer === "one") {
       if (playerOneTime > 0) playerOneTime--;
       if (playerOneTime <= 0) {
-        playerOne.style.background = "red";
         playerOne.classList.remove("blink");
         clearInterval(timer);
       }
@@ -62,7 +71,6 @@ function startTurn(nextPlayer) {
     } else if (currentPlayer === "two") {
       if (playerTwoTime > 0) playerTwoTime--;
       if (playerTwoTime <= 0) {
-        playerTwo.style.background = "red";
         playerTwo.classList.remove("blink");
         clearInterval(timer);
       }
@@ -80,6 +88,10 @@ playerOne.addEventListener("click", () => {
 
   if (currentPlayer === null || currentPlayer === "one") {
     playerOne.classList.remove("blink");
+    if (resumeBtn.style.display === "block") {
+      resumeBtn.style.display = "none";
+      pauseBtn.style.display = "block";
+    }
     playSound("click");
     if (movesSwitch === true) {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
@@ -94,6 +106,10 @@ playerTwo.addEventListener("click", () => {
 
   if (currentPlayer === null || currentPlayer === "two") {
     playerTwo.classList.remove("blink");
+    if (resumeBtn.style.display === "block") {
+      resumeBtn.style.display = "none";
+      pauseBtn.style.display = "block";
+    }
     playSound("click");
     if (movesSwitch === true) {
       playerTwoMoves.textContent = `Moves: ${++playerTwoMoveCount}`;
@@ -119,6 +135,16 @@ function updateTimer() {
   playerTwoTimer.textContent = `${minutesTwo}:${secondsTwo
     .toString()
     .padStart(2, "0")}`;
+
+  // Always update red background if time is 0
+  if (playerOneTime <= 0) {
+    playerOne.style.background = "red";
+    playerOne.classList.remove("blink");
+  }
+  if (playerTwoTime <= 0) {
+    playerTwo.style.background = "red";
+    playerTwo.classList.remove("blink");
+  }
 }
 updateTimer();
 
@@ -127,6 +153,8 @@ pauseBtn.addEventListener("click", () => {
   pauseBtn.style.display = "none";
   clearInterval(timer);
   playSound("resume");
+  playerTwo.classList.remove("blink");
+  playerOne.classList.remove("blink");
 });
 
 resumeBtn.addEventListener("click", () => {
@@ -134,6 +162,8 @@ resumeBtn.addEventListener("click", () => {
   pauseBtn.style.display = "block";
   startTurn(currentPlayer);
   playSound("resume");
+  // playerOne.classList.add("blink");
+  // playerTwo.classList.add("blink");
 });
 
 volumeOnBtn.addEventListener("click", () => {
@@ -149,6 +179,8 @@ volumeOffBtn.addEventListener("click", () => {
 
 resetBtn.addEventListener("click", () => {
   clearInterval(timer);
+  playerTwo.classList.remove("blink");
+  playerOne.classList.remove("blink");
   currentPlayer = null;
   playerOneTime = 0.2 * 60;
   playerTwoTime = 0.2 * 60;

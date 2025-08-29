@@ -64,10 +64,20 @@
   }
 }
 .blink {
-  animation: blink 0.7s step-start infinite;
+  position: relative;
+  z-index: 0;
 }
-
-@keyframes blink {
+.blink::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ff5252;
+  opacity: 1;
+  z-index: -1;
+  border-radius: inherit;
+  animation: blink-bg 0.7s step-start infinite;
+}
+@keyframes blink-bg {
   50% {
     opacity: 0;
   }
