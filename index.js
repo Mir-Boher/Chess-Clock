@@ -17,9 +17,11 @@ const settingsHours = document.getElementById("hours");
 const settingsMinutes = document.getElementById("minutes");
 const settingsSeconds = document.getElementById("seconds");
 const saveSettings = document.getElementById("save-btn");
+const settingsIncrement = document.getElementById("increment");
+const settingsLowTimeAlert = document.getElementById("low-time-alert");
 
 // State
-let currentPlayer = null; // 'one' | 'two'
+let currentPlayer = null; // 'one' or 'two'
 let timer = null;
 let playerOneMoveCount = 0;
 let playerTwoMoveCount = 0;
@@ -30,6 +32,10 @@ let isMuted = false;
 let playerOneMs = 0; // to track secs in millisecs
 let playerTwoMs = 0;
 let settingsTarget = null; // one or two
+let playerOneIncrement = 0;
+let playerTwoIncrement = 0;
+let playerOneLowTimeAlert = 10;
+let playerTwoLowTimeAlert = 10;
 
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
@@ -42,19 +48,34 @@ const IMMEDIATE_FIRST_TICK = true;
 function startTurn(nextPlayer) {
   if (isGameOver()) return; // don't start new turns after game end
   clearInterval(timer);
+
+  if (
+    currentPlayer === "one" &&
+    playerOneIncrement > 0 &&
+    currentPlayer !== nextPlayer
+  ) {
+    playerOneTime += playerOneIncrement;
+  } else if (
+    currentPlayer === "two" &&
+    playerTwoIncrement > 0 &&
+    currentPlayer !== nextPlayer
+  ) {
+    playerTwoTime += playerTwoIncrement;
+  }
+
   currentPlayer = nextPlayer;
 
   // Immediately apply first tick if enabled (mimics physical chess clocks where the displayed time changes as soon as you press)
   if (IMMEDIATE_FIRST_TICK) {
     if (nextPlayer === "one") {
       if (playerOneTime > 0) playerOneTime--;
-      if (playerOneTime > 0 && playerOneTime <= 10) {
+      if (playerOneTime > 0 && playerOneTime <= playerOneLowTimeAlert) {
         playerOne.classList.add("blink");
         playSound("low");
       }
     } else {
       if (playerTwoTime > 0) playerTwoTime--;
-      if (playerTwoTime > 0 && playerTwoTime <= 10) {
+      if (playerTwoTime > 0 && playerTwoTime <= playerTwoLowTimeAlert) {
         playerTwo.classList.add("blink");
         playSound("low");
       }
@@ -73,7 +94,7 @@ function startTurn(nextPlayer) {
         playerOne.classList.remove("blink");
         clearInterval(timer);
       }
-      if (playerOneTime > 0 && playerOneTime <= 10) {
+      if (playerOneTime > 0 && playerOneTime <= playerOneLowTimeAlert) {
         playSound("low");
         playerOne.classList.add("blink");
       }
@@ -83,7 +104,7 @@ function startTurn(nextPlayer) {
         playerTwo.classList.remove("blink");
         clearInterval(timer);
       }
-      if (playerTwoTime > 0 && playerTwoTime <= 10) {
+      if (playerTwoTime > 0 && playerTwoTime <= playerTwoLowTimeAlert) {
         playSound("low");
         playerTwo.classList.add("blink");
       }
@@ -171,10 +192,14 @@ pauseBtn.addEventListener("click", () => {
 resumeBtn.addEventListener("click", () => {
   resumeBtn.style.display = "none";
   pauseBtn.style.display = "block";
-  startTurn(currentPlayer);
+  // when we start game by clicking resume btn instead of player's time component
+  if (currentPlayer === null) {
+    movesSwitch = true;
+    startTurn("two");
+  } else {
+    startTurn(currentPlayer);
+  }
   playSound("resume");
-  // playerOne.classList.add("blink");
-  // playerTwo.classList.add("blink");
 });
 
 volumeOnBtn.addEventListener("click", () => {
@@ -200,8 +225,8 @@ resetBtn.addEventListener("click", () => {
   playerOneMoveCount = 0;
   playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
   playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
-  resumeBtn.style.display = "none";
-  pauseBtn.style.display = "block";
+  resumeBtn.style.display = "block";
+  pauseBtn.style.display = "none";
   playerOne.style.background = "white";
   playerTwo.style.background = "white";
   updateTimer();
@@ -210,17 +235,25 @@ resetBtn.addEventListener("click", () => {
 playerOneSettingsBtn.addEventListener("click", () => {
   settingsTarget = "one";
   modalOverlay.style.display = "block";
+  modalOverlay.style.rotate = "180deg"; // rotating the modal for player one
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "block"; // So one could start the clock after hitting resume btn
   clearInterval(timer);
 });
+
 playerTwoSettingsBtn.addEventListener("click", () => {
   settingsTarget = "two";
   modalOverlay.style.display = "block";
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "block"; // So one could start the clock after hitting resume btn
   clearInterval(timer);
 });
+
 //There are two elements in html that closes the modal
 closeBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     modalOverlay.style.display = "none";
+    modalOverlay.style.rotate = "0deg"; // setting modal rotate to default for player Two
   });
 });
 
@@ -228,12 +261,19 @@ saveSettings.addEventListener("click", () => {
   const hours = parseInt(settingsHours.value) || 0;
   const minutes = parseInt(settingsMinutes.value) || 0;
   const seconds = parseInt(settingsSeconds.value) || 0;
+  const increment = parseInt(settingsIncrement.value) || 0;
+  const lowTimeAlert = parseInt(settingsLowTimeAlert.value) || 0;
   const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
   if (settingsTarget === "one") {
     playerOneTime = totalSeconds;
+    playerOneIncrement = increment;
+    playerOneLowTimeAlert = lowTimeAlert;
+    // console.log("Player one:", playerOneLowTimeAlert);
   } else if (settingsTarget === "two") {
     playerTwoTime = totalSeconds;
+    playerTwoIncrement = increment;
+    playerTwoLowTimeAlert = lowTimeAlert;
   }
   updateTimer();
   modalOverlay.style.display = "none";

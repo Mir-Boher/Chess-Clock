@@ -49,9 +49,9 @@
 }
 #main-page .setting-bar .pause-icon {
   flex: 1;
+  display: none;
 }
 #main-page .setting-bar .resume-icon {
-  display: none;
   flex: 1;
 }
 #main-page .setting-bar .volume-off-icon {
