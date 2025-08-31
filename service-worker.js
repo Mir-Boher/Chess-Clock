@@ -1,27 +1,68 @@
-const CACHE_NAME = "chess-clock-cache-v1";
-const urlsToCache = [
-  "/",
+const CACHE_VERSION = "v2";
+const CACHE_NAME = `chess-clock-${CACHE_VERSION}`;
+
+const CORE_ASSETS = [
+  "/", // root
   "/index.html",
   "/index.css",
   "/index.js",
   "/manifest.json",
+  // icons (rename to simpler names if you can)
+  "/assets/icons/N-One192(Custom).png",
+  "/assets/icons/N-Two512(Custom).png",
+  // sounds
   "/assets/sounds/click.wav",
   "/assets/sounds/resume.wav",
   "/assets/sounds/femalelow.wav",
-  "/assets/icons/N-One192(Custom).png",
-  "/assets/icons/N-Two512(Custom).png",
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+// Install: cache core
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then((c) => c.addAll(CORE_ASSETS))
+      .catch(console.error)
+  );
+  self.skipWaiting();
+});
+
+// Activate: clean old caches
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((k) => k.startsWith("chess-clock-") && k !== CACHE_NAME)
+            .map((k) => caches.delete(k))
+        )
+      )
+  );
+  self.clients.claim();
+});
+
+// Fetch: offline-first for navigations, cache-first for core, network for others
+self.addEventListener("fetch", (e) => {
+  const req = e.request;
+
+  // Handle page navigations (SPA / offline)
+  if (req.mode === "navigate") {
+    e.respondWith(fetch(req).catch(() => caches.match("/index.html")));
+    return;
+  }
+
+  // Try cache, then network
+  e.respondWith(
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+      return fetch(req).then((resp) => resp);
+    })
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => response || fetch(event.request))
-  );
+// Optional: listen for manual skipWaiting trigger
+self.addEventListener("message", (e) => {
+  if (e.data === "skipWaiting") self.skipWaiting();
 });
