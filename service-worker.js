@@ -8,8 +8,8 @@ const CORE_ASSETS = [
   "/index.js",
   "/manifest.json",
   // icons
-  "/assets/icons/N-One192 (Custom).png",
-  "/assets/icons/N-Two512 (Custom).png",
+  "/assets/icons/N-One192.png",
+  "/assets/icons/N-Two512.png",
   // sounds
   "/assets/sounds/click.wav",
   "/assets/sounds/resume.wav",

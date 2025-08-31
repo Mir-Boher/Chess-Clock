@@ -292,6 +292,13 @@ function playSound(name) {
 //Registering the service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js");
+    navigator.serviceWorker
+      .register("/service-worker.js") // Add leading slash
+      .then((registration) => {
+        console.log("Service Worker registered successfully");
+      })
+      .catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
   });
 }
