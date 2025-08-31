@@ -7,9 +7,9 @@ const CORE_ASSETS = [
   "/index.css",
   "/index.js",
   "/manifest.json",
-  // icons (rename to simpler names if you can)
-  "/assets/icons/N-One192(Custom).png",
-  "/assets/icons/N-Two512(Custom).png",
+  // icons
+  "/assets/icons/N-One192 (Custom).png",
+  "/assets/icons/N-Two512 (Custom).png",
   // sounds
   "/assets/sounds/click.wav",
   "/assets/sounds/resume.wav",

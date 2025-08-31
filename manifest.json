@@ -10,13 +10,13 @@
   "description": "A simple chess clock app.",
   "icons": [
     {
-      "src": "/assets/icons/N-One192(Custom).png",
+      "src": "/assets/icons/N-One192 (Custom).png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/icons/N-Two512(Custom).png",
+      "src": "/assets/icons/N-Two512 (Custom).png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
