@@ -8,9 +8,8 @@ const urlsToCache = [
   "/assets/sounds/click.wav",
   "/assets/sounds/resume.wav",
   "/assets/sounds/femalelow.wav",
-  // Add your icons here
-  "/assets/sounds/icons/N.png",
-  "/assets/sounds/icons/N.png",
+  "/assets/icons/N-One192(Custom).png",
+  "/assets/icons/N-Two512(Custom).png",
 ];
 
 self.addEventListener("install", (event) => {
