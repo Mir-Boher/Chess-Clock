@@ -19,22 +19,22 @@ const settingsSeconds = document.getElementById("seconds");
 const saveSettings = document.getElementById("save-btn");
 const settingsIncrement = document.getElementById("increment");
 const settingsLowTimeAlert = document.getElementById("low-time-alert");
+const modeTimeOne = document.querySelector(".time-increment-text-one"); // 5 | 3 mode ...suppose
+const modeTimeTwo = document.querySelector(".time-increment-text-two");
 
 // State
-let currentPlayer = null; // 'one' or 'two'
+let currentPlayer = null; // 'one' or 'two' Initialing null
 let timer = null;
 let playerOneMoveCount = 0;
 let playerTwoMoveCount = 0;
-let movesSwitch = false;
-let playerOneTime = 2 * 60; // seconds
-let playerTwoTime = 2 * 60; // seconds
+let movesSwitch = false; // To track the first move for updating the move count
+let playerOneTime = 2 * 60; // default time "seconds"
+let playerTwoTime = 2 * 60; // default time "seconds"
 let isMuted = false;
-let playerOneMs = 0; // to track secs in millisecs
-let playerTwoMs = 0;
-let settingsTarget = null; // one or two
+let settingsTarget = null; // one or two "Modal settings"
 let playerOneIncrement = 0;
 let playerTwoIncrement = 0;
-let playerOneLowTimeAlert = 10;
+let playerOneLowTimeAlert = 10; //default value
 let playerTwoLowTimeAlert = 10;
 
 const sounds = {
@@ -42,6 +42,7 @@ const sounds = {
   resume: new Audio("assets/sounds/resume.wav"),
   low: new Audio("assets/sounds/femalelow.wav"),
 };
+
 // Config: set to true to show the next player's timer decrement immediately (no 1s visual delay)
 const IMMEDIATE_FIRST_TICK = true;
 
@@ -117,12 +118,13 @@ playerOne.addEventListener("click", (e) => {
   if (e.target.closest(".settings-one")) return;
   if (isGameOver()) return;
 
+  // Hide the resume button after clicking
+  resumeBtn.style.display = "none";
+  pauseBtn.style.display = "block";
+
   if (currentPlayer === null || currentPlayer === "one") {
     playerOne.classList.remove("blink");
-    if (resumeBtn.style.display === "block") {
-      resumeBtn.style.display = "none";
-      pauseBtn.style.display = "block";
-    }
+
     playSound("click");
     if (movesSwitch === true) {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
@@ -136,12 +138,12 @@ playerTwo.addEventListener("click", (e) => {
   if (e.target.closest(".settings-two")) return;
   if (isGameOver()) return;
 
+  // Hide the resume button after clicking
+  resumeBtn.style.display = "none";
+  pauseBtn.style.display = "block";
+
   if (currentPlayer === null || currentPlayer === "two") {
     playerTwo.classList.remove("blink");
-    if (resumeBtn.style.display === "block") {
-      resumeBtn.style.display = "none";
-      pauseBtn.style.display = "block";
-    }
     playSound("click");
     if (movesSwitch === true) {
       playerTwoMoves.textContent = `Moves: ${++playerTwoMoveCount}`;
@@ -234,6 +236,9 @@ resetBtn.addEventListener("click", () => {
 
 playerOneSettingsBtn.addEventListener("click", () => {
   settingsTarget = "one";
+  console.log("Player One time :", playerOneTime);
+  settingsMinutes.value = parseInt(playerOneTime / 60);
+  settingsSeconds.value = parseInt(playerOneTime % 60);
   modalOverlay.style.display = "block";
   modalOverlay.style.rotate = "180deg"; // rotating the modal for player one
   pauseBtn.style.display = "none";
@@ -243,13 +248,15 @@ playerOneSettingsBtn.addEventListener("click", () => {
 
 playerTwoSettingsBtn.addEventListener("click", () => {
   settingsTarget = "two";
+  settingsMinutes.value = parseInt(playerTwoTime / 60);
+  settingsSeconds.value = parseInt(playerTwoTime % 60);
   modalOverlay.style.display = "block";
   pauseBtn.style.display = "none";
   resumeBtn.style.display = "block"; // So one could start the clock after hitting resume btn
   clearInterval(timer);
 });
 
-//There are two elements in html that closes the modal
+//There are two elements in html that closes the modal "cancel/cross"
 closeBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     modalOverlay.style.display = "none";
@@ -269,11 +276,12 @@ saveSettings.addEventListener("click", () => {
     playerOneTime = totalSeconds;
     playerOneIncrement = increment;
     playerOneLowTimeAlert = lowTimeAlert;
-    // console.log("Player one:", playerOneLowTimeAlert);
+    modeTimeOne.textContent = `${minutes} | ${increment}`; // update mode time "minutes | secs"
   } else if (settingsTarget === "two") {
     playerTwoTime = totalSeconds;
     playerTwoIncrement = increment;
     playerTwoLowTimeAlert = lowTimeAlert;
+    modeTimeTwo.textContent = `${minutes} | ${increment}`; // update mode time "mins | secs"
   }
   updateTimer();
   modalOverlay.style.display = "none";
@@ -289,7 +297,19 @@ function playSound(name) {
   }
 }
 
-//Registering the service worker
+//Validate the input field of settings
+function validateInput(input) {
+  // Limit to 2 digits
+  if (input.value.length > 2) {
+    input.value = input.value.slice(0, 2);
+  }
+  // Ensure value doesn't exceed max
+  if (parseInt(input.value) > 59) {
+    input.value = 59;
+  }
+}
+
+// Registering the service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker

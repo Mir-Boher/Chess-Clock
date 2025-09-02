@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Chess Clock</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#222222" />
@@ -16,7 +22,11 @@
   <body>
     <section id="main-page">
       <div class="timer-component" id="timer-component-one">
-        <div class="moves" id="moves-one">Moves: 0</div>
+        <div class="time-info-move-container">
+          <div class="time-increment-text-one">2 | 0</div>
+          <div class="moves" id="moves-one">Moves: 0</div>
+        </div>
+
         <div class="time" id="time-one"></div>
         <span class="material-symbols-outlined settings-one">
           instant_mix
@@ -36,7 +46,10 @@
       </div>
 
       <div class="timer-component" id="timer-component-two">
-        <div class="moves" id="moves-two">Moves: 0</div>
+        <div class="time-info-move-container">
+          <div class="time-increment-text-two">2 | 0</div>
+          <div class="moves" id="moves-two">Moves: 0</div>
+        </div>
         <div class="time" id="time-two"></div>
         <span class="material-symbols-outlined settings-two">
           instant_mix
@@ -115,7 +128,7 @@
             <input
               type="number"
               class="increment-input"
-              value="5"
+              value="10"
               min="1"
               max="300"
               id="low-time-alert"
@@ -148,6 +161,33 @@
           <button class="btn btn-save" id="save-btn">Save</button>
         </div>
       </div>
+    </section>
+    <section id="time-control-page">
+      <div class="page-header">
+        <span class="material-symbols-outlined arrow-back"> arrow_back </span>
+        <p>Time Controls</p>
+      </div>
+      <h2 class="title">Detroit.</h2>
+      <div class="custom-time">
+        <span class="material-symbols-outlined"> add </span>
+        New Custom Time
+      </div>
+      <div class="mode-container">
+        <p>Presets</p>
+        <div class="mode" data-minutes="1" data-increment="0">1 min</div>
+        <div class="mode" data-minutes="1" data-increment="1">
+          1 min | 1 sec
+        </div>
+        <div class="mode" data-minutes="2" data-increment="1">
+          2 min | 1 sec
+        </div>
+        <div class="mode" data-minutes="3" data-increment="0">3 min</div>
+        <div class="mode" data-minutes="3" data-increment="2">
+          3 min | 2 sec
+        </div>
+        <div class="mode" data-minutes="5" data-increment="0">5 min</div>
+      </div>
+      <div class="btn-container"><button id="start-btn">Start</button></div>
     </section>
   </body>
 </html>
