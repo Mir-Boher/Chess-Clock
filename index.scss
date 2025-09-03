@@ -118,68 +118,6 @@
   }
 }
 
-#time-control-page {
-  display: none;
-  position: relative;
-  .page-header {
-    display: flex;
-    gap: 1.5rem;
-    border-bottom: 1px solid black;
-    padding: 1rem;
-    align-items: center;
-    .arrow-back {
-      cursor: pointer;
-    }
-    p {
-      font-weight: 600;
-    }
-  }
-  .title {
-    font-size: 2rem;
-    text-align: center;
-    padding: 1.5rem;
-  }
-  .custom-time {
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    width: 200px;
-    justify-content: center;
-    gap: 1rem;
-    margin: auto;
-    padding: 0.5rem 0;
-    cursor: pointer;
-  }
-  .custom-time:hover {
-    background-color: #000000;
-    color: white;
-  }
-  .mode-container {
-    margin-top: 1rem;
-    padding: 1rem;
-    .mode {
-      padding: 0.8rem 0;
-    }
-  }
-  .btn-container {
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    #start-btn {
-      background-color: #000000;
-      outline: none;
-      border: none;
-      color: white;
-      width: 100%;
-      font-size: 1.5rem;
-      font-weight: 600;
-      padding: 0.8rem 0;
-      cursor: pointer;
-    }
-  }
-}
-
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -395,5 +333,75 @@ input:checked + .slider:before {
 @keyframes blink-bg {
   50% {
     opacity: 0;
+  }
+}
+
+#time-control-page {
+  display: none;
+  position: relative;
+  .page-header {
+    display: flex;
+    gap: 1.5rem;
+    border-bottom: 1px solid black;
+    padding: 1rem;
+    align-items: center;
+    .arrow-back {
+      cursor: pointer;
+    }
+    p {
+      font-weight: 600;
+    }
+  }
+  .title {
+    font-size: 2rem;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .custom-time {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    width: 200px;
+    justify-content: center;
+    gap: 1rem;
+    margin: auto;
+    padding: 0.5rem 0;
+    cursor: pointer;
+  }
+  .custom-time:hover {
+    background-color: #000000;
+    color: white;
+  }
+  .mode-container {
+    margin-top: 1rem;
+    padding: 1rem;
+
+    .mode {
+      padding: 0.8rem 0;
+      cursor: pointer;
+    }
+    .active {
+      background-color: #000000;
+      color: white;
+      padding-left: 0.5rem;
+    }
+  }
+  .btn-container {
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    #start-btn {
+      background-color: #000000;
+      outline: none;
+      border: none;
+      color: white;
+      width: 100%;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 0.8rem 0;
+      cursor: pointer;
+    }
   }
 }

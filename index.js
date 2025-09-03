@@ -9,6 +9,7 @@ const resumeBtn = document.querySelector(".resume-icon");
 const resetBtn = document.querySelector(".replay-icon");
 const volumeOnBtn = document.querySelector(".volume-on-icon");
 const volumeOffBtn = document.querySelector(".volume-off-icon");
+const timerBtn = document.querySelector(".timer-icon");
 const modalOverlay = document.getElementById("modal-overlay");
 const closeBtn = document.querySelectorAll(".close");
 const playerOneSettingsBtn = document.querySelector(".settings-one");
@@ -21,21 +22,28 @@ const settingsIncrement = document.getElementById("increment");
 const settingsLowTimeAlert = document.getElementById("low-time-alert");
 const modeTimeOne = document.querySelector(".time-increment-text-one"); // 5 | 3 mode ...suppose
 const modeTimeTwo = document.querySelector(".time-increment-text-two");
+const mainPage = document.getElementById("main-page");
+const timeControlPage = document.getElementById("time-control-page");
+const arrowBackBtn = document.querySelector(".arrow-back");
+const modes = document.querySelectorAll(".mode");
+const startBtn = document.getElementById("start-btn");
 
 // State
-let currentPlayer = null; // 'one' or 'two' Initialing null
+let currentPlayer = null;
 let timer = null;
 let playerOneMoveCount = 0;
 let playerTwoMoveCount = 0;
 let movesSwitch = false; // To track the first move for updating the move count
 let playerOneTime = 2 * 60; // default time "seconds"
-let playerTwoTime = 2 * 60; // default time "seconds"
+let playerTwoTime = 2 * 60;
 let isMuted = false;
 let settingsTarget = null; // one or two "Modal settings"
 let playerOneIncrement = 0;
 let playerTwoIncrement = 0;
-let playerOneLowTimeAlert = 10; //default value
+let playerOneLowTimeAlert = 10;
 let playerTwoLowTimeAlert = 10;
+let selectedMinutes = null;
+let selectedIncrements = null;
 
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
@@ -220,8 +228,10 @@ resetBtn.addEventListener("click", () => {
   playerTwo.classList.remove("blink");
   playerOne.classList.remove("blink");
   currentPlayer = null;
-  playerOneTime = 2 * 60;
-  playerTwoTime = 2 * 60;
+  if (selectedIncrements === null && selectedMinutes === null) {
+    playerOneTime = selectedMinutes * 60;
+    playerTwoTime = selectedMinutes * 60;
+  }
   movesSwitch = false;
   playerTwoMoveCount = 0;
   playerOneMoveCount = 0;
@@ -240,7 +250,7 @@ playerOneSettingsBtn.addEventListener("click", () => {
   settingsMinutes.value = parseInt(playerOneTime / 60);
   settingsSeconds.value = parseInt(playerOneTime % 60);
   modalOverlay.style.display = "block";
-  modalOverlay.style.rotate = "180deg"; // rotating the modal for player one
+  modalOverlay.style.rotate = "180deg";
   pauseBtn.style.display = "none";
   resumeBtn.style.display = "block"; // So one could start the clock after hitting resume btn
   clearInterval(timer);
@@ -297,17 +307,52 @@ function playSound(name) {
   }
 }
 
-//Validate the input field of settings
 function validateInput(input) {
-  // Limit to 2 digits
   if (input.value.length > 2) {
     input.value = input.value.slice(0, 2);
   }
-  // Ensure value doesn't exceed max
+
   if (parseInt(input.value) > 59) {
     input.value = 59;
   }
 }
+
+arrowBackBtn.addEventListener("click", () => {
+  mainPage.style.display = "flex";
+  timeControlPage.style.display = "none";
+});
+
+timerBtn.addEventListener("click", () => {
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "block";
+  clearInterval(timer);
+  mainPage.style.display = "none";
+  timeControlPage.style.display = "block";
+});
+
+modes.forEach((modeEl) =>
+  modeEl.addEventListener("click", () => {
+    modes.forEach((el) => el.classList.remove("active"));
+    modeEl.classList.add("active");
+
+    selectedMinutes = parseInt(modeEl.dataset.minutes);
+    selectedIncrements = parseInt(modeEl.dataset.increment);
+  })
+);
+
+startBtn.addEventListener("click", () => {
+  playerOneTime = selectedMinutes * 60;
+  playerTwoTime = selectedMinutes * 60;
+  playerOneIncrement = selectedIncrements;
+  playerTwoIncrement = selectedIncrements;
+  modeTimeOne.textContent = `${selectedMinutes} | ${selectedIncrements}`;
+  modeTimeTwo.textContent = `${selectedMinutes} | ${selectedIncrements}`;
+
+  updateTimer();
+
+  mainPage.style.display = "flex";
+  timeControlPage.style.display = "none";
+});
 
 // Registering the service worker
 if ("serviceWorker" in navigator) {

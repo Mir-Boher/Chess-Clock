@@ -12,7 +12,6 @@
   min-height: 100vh;
   width: 100%;
   flex: 1;
-  display: none;
 }
 #main-page .timer-component {
   width: 100%;
@@ -113,67 +112,6 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-}
-
-#time-control-page {
-  position: relative;
-}
-#time-control-page .page-header {
-  display: flex;
-  gap: 1.5rem;
-  border-bottom: 1px solid black;
-  padding: 1rem;
-  align-items: center;
-}
-#time-control-page .page-header .arrow-back {
-  cursor: pointer;
-}
-#time-control-page .page-header p {
-  font-weight: 600;
-}
-#time-control-page .title {
-  font-size: 2rem;
-  text-align: center;
-  padding: 1.5rem;
-}
-#time-control-page .custom-time {
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  width: 200px;
-  justify-content: center;
-  gap: 1rem;
-  margin: auto;
-  padding: 0.5rem 0;
-  cursor: pointer;
-}
-#time-control-page .custom-time:hover {
-  background-color: #000000;
-  color: white;
-}
-#time-control-page .mode-container {
-  margin-top: 1rem;
-  padding: 1rem;
-}
-#time-control-page .mode-container .mode {
-  padding: 0.8rem 0;
-}
-#time-control-page .btn-container {
-  padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-#time-control-page .btn-container #start-btn {
-  background-color: #000000;
-  outline: none;
-  border: none;
-  color: white;
-  width: 100%;
-  font-size: 1.5rem;
-  font-weight: 600;
-  padding: 0.8rem 0;
-  cursor: pointer;
 }
 
 @keyframes modalSlideIn {
@@ -394,6 +332,73 @@ input:checked + .slider:before {
   50% {
     opacity: 0;
   }
+}
+#time-control-page {
+  display: none;
+  position: relative;
+}
+#time-control-page .page-header {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+  align-items: center;
+}
+#time-control-page .page-header .arrow-back {
+  cursor: pointer;
+}
+#time-control-page .page-header p {
+  font-weight: 600;
+}
+#time-control-page .title {
+  font-size: 2rem;
+  text-align: center;
+  padding: 1.5rem;
+}
+#time-control-page .custom-time {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  width: 200px;
+  justify-content: center;
+  gap: 1rem;
+  margin: auto;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+#time-control-page .custom-time:hover {
+  background-color: #000000;
+  color: white;
+}
+#time-control-page .mode-container {
+  margin-top: 1rem;
+  padding: 1rem;
+}
+#time-control-page .mode-container .mode {
+  padding: 0.8rem 0;
+  cursor: pointer;
+}
+#time-control-page .mode-container .active {
+  background-color: #000000;
+  color: white;
+  padding-left: 0.5rem;
+}
+#time-control-page .btn-container {
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+#time-control-page .btn-container #start-btn {
+  background-color: #000000;
+  outline: none;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0.8rem 0;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=index.css.map */
