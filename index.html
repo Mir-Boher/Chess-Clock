@@ -130,7 +130,7 @@
               class="increment-input"
               value="10"
               min="1"
-              max="300"
+              max="59"
               id="low-time-alert"
             />
             <span style="color: #666; font-size: 12px">sec</span>
@@ -142,14 +142,14 @@
             <div class="switch-group">
               <span class="switch-label">Sound</span>
               <label class="switch">
-                <input type="checkbox" checked id="soundToggle" />
+                <input type="checkbox" checked id="sound-toggle" />
                 <span class="slider"></span>
               </label>
             </div>
             <div class="switch-group">
               <span class="switch-label">Background color</span>
               <label class="switch">
-                <input type="checkbox" checked id="bgAlertToggle" />
+                <input type="checkbox" checked id="bg-alert-toggle" />
                 <span class="slider"></span>
               </label>
             </div>
@@ -164,7 +164,9 @@
     </section>
     <section id="time-control-page">
       <div class="page-header">
-        <span class="material-symbols-outlined arrow-back"> arrow_back </span>
+        <span class="material-symbols-outlined arrow-back arrow-back-one">
+          arrow_back
+        </span>
         <p>Time Controls</p>
       </div>
       <h2 class="title">Detroit.</h2>
@@ -188,6 +190,50 @@
         <div class="mode" data-minutes="5" data-increment="0">5 min</div>
       </div>
       <div class="btn-container"><button id="start-btn">Start</button></div>
+    </section>
+    <section id="custom-time-page">
+      <div class="page-header">
+        <span class="material-symbols-outlined arrow-back arrow-back-two">
+          arrow_back
+        </span>
+        <p>Custom Time</p>
+      </div>
+      <div class="custom-time-container">
+        <div class="setting-group">
+          <div class="input-row">
+            <label class="setting-label" for="custom-time">Time</label>
+            <input
+              type="number"
+              class="custom-time-input"
+              value="0"
+              min="0"
+              max="59"
+              id="custom-time"
+            />
+            <span style="color: #666; font-size: 12px">sec</span>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="input-row">
+            <label class="setting-label" for="custom-increment"
+              >Increment</label
+            >
+            <input
+              type="number"
+              class="custom-increment-input"
+              value="10"
+              min="0"
+              max="59"
+              id="custom-increment"
+            />
+            <span style="color: #666; font-size: 12px">sec</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn-container">
+        <button id="save-custom-time-btn">Save</button>
+      </div>
     </section>
   </body>
 </html>

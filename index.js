@@ -24,9 +24,14 @@ const modeTimeOne = document.querySelector(".time-increment-text-one"); // 5 | 3
 const modeTimeTwo = document.querySelector(".time-increment-text-two");
 const mainPage = document.getElementById("main-page");
 const timeControlPage = document.getElementById("time-control-page");
-const arrowBackBtn = document.querySelector(".arrow-back");
+const customTimePage = document.getElementById("custom-time-page");
+const arrowBackBtns = document.querySelectorAll(".arrow-back");
+// const arrowBackBtnTwo = document.querySelector(".arrow-back-two");
+const customTimeBtn = document.querySelector(".custom-time");
 const modes = document.querySelectorAll(".mode");
 const startBtn = document.getElementById("start-btn");
+const soundToggle = document.getElementById("sound-toggle");
+const bgAlertToggle = document.getElementById("bg-alert-toggle");
 
 // State
 let currentPlayer = null;
@@ -34,16 +39,20 @@ let timer = null;
 let playerOneMoveCount = 0;
 let playerTwoMoveCount = 0;
 let movesSwitch = false; // To track the first move for updating the move count
-let playerOneTime = 2 * 60; // default time "seconds"
-let playerTwoTime = 2 * 60;
 let isMuted = false;
 let settingsTarget = null; // one or two "Modal settings"
-let playerOneIncrement = 0;
-let playerTwoIncrement = 0;
 let playerOneLowTimeAlert = 10;
 let playerTwoLowTimeAlert = 10;
-let selectedMinutes = null;
-let selectedIncrements = null;
+let selectedMinutes = 2; // default value
+let selectedIncrements = 0;
+let playerOneTime = selectedMinutes * 60;
+let playerTwoTime = selectedMinutes * 60;
+let playerOneIncrement = selectedIncrements;
+let playerTwoIncrement = selectedIncrements;
+let playerOneBgAlertToggle = true;
+let playerTwoBgAlertToggle = true;
+let playerOneSoundToggle = true;
+let playerTwoSoundToggle = true;
 
 const sounds = {
   click: new Audio("assets/sounds/click.wav"),
@@ -78,15 +87,35 @@ function startTurn(nextPlayer) {
   if (IMMEDIATE_FIRST_TICK) {
     if (nextPlayer === "one") {
       if (playerOneTime > 0) playerOneTime--;
-      if (playerOneTime > 0 && playerOneTime <= playerOneLowTimeAlert) {
-        playerOne.classList.add("blink");
+      if (
+        playerOneTime > 0 &&
+        playerOneTime <= playerOneLowTimeAlert &&
+        playerOneSoundToggle
+      ) {
         playSound("low");
+      }
+      if (
+        playerOneTime > 0 &&
+        playerOneBgAlertToggle &&
+        playerOneTime <= playerOneLowTimeAlert
+      ) {
+        playerOne.classList.add("blink");
       }
     } else {
       if (playerTwoTime > 0) playerTwoTime--;
-      if (playerTwoTime > 0 && playerTwoTime <= playerTwoLowTimeAlert) {
-        playerTwo.classList.add("blink");
+      if (
+        playerTwoTime > 0 &&
+        playerTwoTime <= playerTwoLowTimeAlert &&
+        playerTwoSoundToggle
+      ) {
         playSound("low");
+      }
+      if (
+        playerTwoTime > 0 &&
+        playerTwoBgAlertToggle &&
+        playerTwoTime <= playerTwoLowTimeAlert
+      ) {
+        playerTwo.classList.add("blink");
       }
     }
     updateTimer();
@@ -105,6 +134,12 @@ function startTurn(nextPlayer) {
       }
       if (playerOneTime > 0 && playerOneTime <= playerOneLowTimeAlert) {
         playSound("low");
+      }
+      if (
+        playerOneTime > 0 &&
+        playerOneBgAlertToggle &&
+        playerOneTime <= playerOneLowTimeAlert
+      ) {
         playerOne.classList.add("blink");
       }
     } else if (currentPlayer === "two") {
@@ -115,6 +150,12 @@ function startTurn(nextPlayer) {
       }
       if (playerTwoTime > 0 && playerTwoTime <= playerTwoLowTimeAlert) {
         playSound("low");
+      }
+      if (
+        playerTwoTime > 0 &&
+        playerTwoBgAlertToggle &&
+        playerTwoTime <= playerTwoLowTimeAlert
+      ) {
         playerTwo.classList.add("blink");
       }
     }
@@ -126,14 +167,15 @@ playerOne.addEventListener("click", (e) => {
   if (e.target.closest(".settings-one")) return;
   if (isGameOver()) return;
 
-  // Hide the resume button after clicking
-  resumeBtn.style.display = "none";
-  pauseBtn.style.display = "block";
+  // resumeBtn.style.display = "none";
+  // pauseBtn.style.display = "block";
 
   if (currentPlayer === null || currentPlayer === "one") {
+    resumeBtn.style.display = "none";
+    pauseBtn.style.display = "block";
     playerOne.classList.remove("blink");
-
     playSound("click");
+
     if (movesSwitch === true) {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
     }
@@ -146,11 +188,9 @@ playerTwo.addEventListener("click", (e) => {
   if (e.target.closest(".settings-two")) return;
   if (isGameOver()) return;
 
-  // Hide the resume button after clicking
-  resumeBtn.style.display = "none";
-  pauseBtn.style.display = "block";
-
   if (currentPlayer === null || currentPlayer === "two") {
+    resumeBtn.style.display = "none";
+    pauseBtn.style.display = "block";
     playerTwo.classList.remove("blink");
     playSound("click");
     if (movesSwitch === true) {
@@ -228,10 +268,10 @@ resetBtn.addEventListener("click", () => {
   playerTwo.classList.remove("blink");
   playerOne.classList.remove("blink");
   currentPlayer = null;
-  if (selectedIncrements === null && selectedMinutes === null) {
-    playerOneTime = selectedMinutes * 60;
-    playerTwoTime = selectedMinutes * 60;
-  }
+  playerOneTime = selectedMinutes * 60;
+  playerOneIncrement = selectedIncrements;
+  playerTwoTime = selectedMinutes * 60;
+  playerTwoIncrement = selectedIncrements;
   movesSwitch = false;
   playerTwoMoveCount = 0;
   playerOneMoveCount = 0;
@@ -283,16 +323,21 @@ saveSettings.addEventListener("click", () => {
   const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
   if (settingsTarget === "one") {
+    playerOneBgAlertToggle = bgAlertToggle.checked;
+    playerOneSoundToggle = soundToggle.checked;
     playerOneTime = totalSeconds;
     playerOneIncrement = increment;
     playerOneLowTimeAlert = lowTimeAlert;
-    modeTimeOne.textContent = `${minutes} | ${increment}`; // update mode time "minutes | secs"
+    modeTimeOne.textContent = `${minutes} | ${increment}`;
   } else if (settingsTarget === "two") {
+    playerTwoBgAlertToggle = bgAlertToggle.checked;
+    playerTwoSoundToggle = soundToggle.checked;
     playerTwoTime = totalSeconds;
     playerTwoIncrement = increment;
     playerTwoLowTimeAlert = lowTimeAlert;
-    modeTimeTwo.textContent = `${minutes} | ${increment}`; // update mode time "mins | secs"
+    modeTimeTwo.textContent = `${minutes} | ${increment}`;
   }
+
   updateTimer();
   modalOverlay.style.display = "none";
 });
@@ -317,9 +362,20 @@ function validateInput(input) {
   }
 }
 
-arrowBackBtn.addEventListener("click", () => {
-  mainPage.style.display = "flex";
-  timeControlPage.style.display = "none";
+// arrowBackBtns.addEventListener("click", () => {
+//   mainPage.style.display = "flex";
+//   timeControlPage.style.display = "none";
+// });
+arrowBackBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    if (e.target.classList.contains("arrow-back-one")) {
+      mainPage.style.display = "flex";
+      timeControlPage.style.display = "none";
+    } else if (e.target.classList.contains("arrow-back-two")) {
+      timeControlPage.style.display = "block";
+      customTimePage.style.display = "none";
+    }
+  });
 });
 
 timerBtn.addEventListener("click", () => {
@@ -347,11 +403,18 @@ startBtn.addEventListener("click", () => {
   playerTwoIncrement = selectedIncrements;
   modeTimeOne.textContent = `${selectedMinutes} | ${selectedIncrements}`;
   modeTimeTwo.textContent = `${selectedMinutes} | ${selectedIncrements}`;
-
+  playerTwoMoveCount = 0;
+  playerOneMoveCount = 0;
+  playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
+  playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
   updateTimer();
-
   mainPage.style.display = "flex";
   timeControlPage.style.display = "none";
+});
+
+customTimeBtn.addEventListener("click", () => {
+  timeControlPage.style.display = "none";
+  customTimePage.style.display = "block";
 });
 
 // Registering the service worker
