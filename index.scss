@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Share+Tech+Mono&display=swap");
+:root {
+  --color-bg: #e9e3d5;
+  --color-text: #1a1a1a;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +11,13 @@
   font-family: "Share Tech Mono", monospace;
 }
 
+.dark-theme {
+  --color-bg: #1a1a1a;
+  --color-text: #e9e3d5;
+}
+body {
+  background-color: var(--color-bg);
+}
 #main-page {
   display: flex;
   flex-direction: column;
@@ -40,8 +52,8 @@
   }
   .setting-bar {
     width: 100%;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
     padding: 1rem;
     display: flex;
     gap: 1rem;
@@ -77,8 +89,8 @@
   justify-content: center;
   z-index: 1000;
   .modal {
-    background: #ffffff;
-    border: 2px solid #000000;
+    background: var(--color-bg);
+    border: 2px solid var(--color-text);
     padding: 32px;
     width: 100%;
     max-width: 400px;
@@ -90,7 +102,7 @@
     .modal-header {
       text-align: center;
       margin-bottom: 24px;
-      color: #000000;
+      color: var(--color-text);
       .modal-title {
         font-size: 18px;
         font-weight: bold;
@@ -101,7 +113,7 @@
       margin-bottom: 20px;
       .setting-label {
         display: block;
-        color: #000000;
+        color: var(--color-text);
         font-weight: bold;
         margin-bottom: 8px;
         font-size: 14px;
@@ -128,7 +140,7 @@
 
 .setting-label {
   display: block;
-  color: #000000;
+  color: var(--color-text);
   font-weight: bold;
   margin-bottom: 8px;
   font-size: 14px;
@@ -150,9 +162,9 @@
 .time-input {
   width: 60px;
   padding: 8px;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  color: #000000;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-text);
+  color: var(--color-text);
   font-size: 18px;
   text-align: center;
   font-family: "Share Tech Mono", monospace;
@@ -160,14 +172,14 @@
 }
 
 .time-input:focus {
-  outline: 2px solid #000000;
+  outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
 
 .time-separator {
   font-size: 24px;
   font-weight: bold;
-  color: #000000;
+  color: var(--color-text);
   margin: 0 4px;
 }
 
@@ -181,9 +193,9 @@
 .increment-input {
   width: 80px;
   padding: 8px;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  color: #000000;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-text);
+  color: var(--color-text);
   font-size: 18px;
   text-align: center;
   font-family: "Share Tech Mono", monospace;
@@ -191,7 +203,7 @@
 }
 
 .increment-input:focus {
-  outline: 2px solid #000000;
+  outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
 
@@ -208,7 +220,7 @@
 }
 
 .switch-label {
-  color: #000000;
+  color: var(--color-text);
   font-size: 14px;
   font-weight: normal;
 }
@@ -234,7 +246,7 @@
   bottom: 0;
   background-color: #cccccc;
   transition: 0.2s;
-  border: 2px solid #000000;
+  border: 2px solid var(--color-text);
 }
 
 .slider:before {
@@ -244,12 +256,12 @@
   width: 16px;
   left: 2px;
   bottom: 2px;
-  background-color: #000000;
+  background-color: var(--color-text);
   transition: 0.2s;
 }
 
 input:checked + .slider {
-  background-color: #ffffff;
+  background-color: var(--color-bg);
 }
 
 input:checked + .slider:before {
@@ -265,9 +277,9 @@ input:checked + .slider:before {
 .btn {
   flex: 1;
   padding: 12px 16px;
-  border: 2px solid #000000;
-  background-color: #ffffff;
-  color: #000000;
+  border: 2px solid var(--color-text);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
@@ -275,13 +287,13 @@ input:checked + .slider:before {
   transition: all 0.1s ease;
 }
 .btn-save {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--color-text);
+  color: var(--color-bg);
 }
 
 .btn:hover {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--color-text);
+  color: var(--color-bg);
 }
 
 .btn:active {
@@ -294,7 +306,7 @@ input:checked + .slider:before {
   right: 12px;
   background: none;
   border: none;
-  color: #000000;
+  color: var(--color-text);
   font-size: 40px;
   cursor: pointer;
   font-weight: bold;
@@ -341,7 +353,7 @@ input:checked + .slider:before {
   .page-header {
     display: flex;
     gap: 1.5rem;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--color-text);
     padding: 1rem;
     align-items: center;
     .arrow-back {
@@ -357,7 +369,7 @@ input:checked + .slider:before {
     padding: 1.5rem;
   }
   .custom-time {
-    border: 1px solid black;
+    border: 1px solid var(--color-text);
     display: flex;
     align-items: center;
     width: 200px;
@@ -368,20 +380,21 @@ input:checked + .slider:before {
     cursor: pointer;
   }
   .custom-time:hover {
-    background-color: #000000;
-    color: white;
+    background-color: var(--color-text);
+    color: var(--color-bg);
   }
   .mode-container {
     margin-top: 1rem;
     padding: 1rem;
-
+    overflow-y: auto;
+    max-height: 330px;
     .mode {
       padding: 0.8rem 0;
       cursor: pointer;
     }
     .active {
-      background-color: #000000;
-      color: white;
+      background-color: var(--color-text);
+      color: var(--color-bg);
       padding-left: 0.5rem;
     }
   }
@@ -392,10 +405,10 @@ input:checked + .slider:before {
     width: 100%;
 
     #start-btn {
-      background-color: #000000;
+      background-color: var(--color-text);
       outline: none;
       border: none;
-      color: white;
+      color: var(--color-bg);
       width: 100%;
       font-size: 1.5rem;
       font-weight: 600;
@@ -411,7 +424,7 @@ input:checked + .slider:before {
   .page-header {
     display: flex;
     gap: 1.5rem;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--color-text);
     padding: 1rem;
     align-items: center;
     .arrow-back-two {
@@ -435,9 +448,9 @@ input:checked + .slider:before {
         .custom-time-input {
           width: 80px;
           padding: 8px;
-          background-color: #ffffff;
-          border: 2px solid #000000;
-          color: #000000;
+          background-color: var(--color-bg);
+          border: 2px solid var(--color-text);
+          color: var(--color-text);
           font-size: 18px;
           text-align: center;
           font-family: "Share Tech Mono", monospace;
@@ -445,15 +458,15 @@ input:checked + .slider:before {
         }
 
         .custom-time-input:focus {
-          outline: 2px solid #000000;
+          outline: 2px solid var(--color-text);
           outline-offset: 2px;
         }
         .custom-increment-input {
           width: 80px;
           padding: 8px;
-          background-color: #ffffff;
-          border: 2px solid #000000;
-          color: #000000;
+          background-color: var(--color-bg);
+          border: 2px solid var(--color-text);
+          color: var(--color-text);
           font-size: 18px;
           text-align: center;
           font-family: "Share Tech Mono", monospace;
@@ -461,28 +474,28 @@ input:checked + .slider:before {
         }
 
         .custom-increment-input:focus {
-          outline: 2px solid #000000;
+          outline: 2px solid var(--color-text);
           outline-offset: 2px;
         }
       }
     }
   }
-}
-.btn-container {
-  padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-
-  #save-custom-time-btn {
-    background-color: #000000;
-    outline: none;
-    border: none;
-    color: white;
+  .btn-container {
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding: 0.8rem 0;
-    cursor: pointer;
+
+    #save-custom-time-btn {
+      background-color: var(--color-text);
+      outline: none;
+      border: none;
+      color: var(--color-bg);
+      width: 100%;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 0.8rem 0;
+      cursor: pointer;
+    }
   }
 }

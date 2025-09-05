@@ -26,12 +26,14 @@ const mainPage = document.getElementById("main-page");
 const timeControlPage = document.getElementById("time-control-page");
 const customTimePage = document.getElementById("custom-time-page");
 const arrowBackBtns = document.querySelectorAll(".arrow-back");
-// const arrowBackBtnTwo = document.querySelector(".arrow-back-two");
 const customTimeBtn = document.querySelector(".custom-time");
-const modes = document.querySelectorAll(".mode");
+const modeContainer = document.querySelector(".mode-container");
 const startBtn = document.getElementById("start-btn");
 const soundToggle = document.getElementById("sound-toggle");
 const bgAlertToggle = document.getElementById("bg-alert-toggle");
+const customMinutes = document.getElementById("custom-time");
+const customIncrements = document.getElementById("custom-increment");
+const customSaveBtn = document.getElementById("save-custom-time-btn");
 
 // State
 let currentPlayer = null;
@@ -279,8 +281,8 @@ resetBtn.addEventListener("click", () => {
   playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
   resumeBtn.style.display = "block";
   pauseBtn.style.display = "none";
-  playerOne.style.background = "white";
-  playerTwo.style.background = "white";
+  playerOne.style.background = "";
+  playerTwo.style.background = "";
   updateTimer();
 });
 
@@ -362,10 +364,6 @@ function validateInput(input) {
   }
 }
 
-// arrowBackBtns.addEventListener("click", () => {
-//   mainPage.style.display = "flex";
-//   timeControlPage.style.display = "none";
-// });
 arrowBackBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     if (e.target.classList.contains("arrow-back-one")) {
@@ -386,15 +384,18 @@ timerBtn.addEventListener("click", () => {
   timeControlPage.style.display = "block";
 });
 
-modes.forEach((modeEl) =>
-  modeEl.addEventListener("click", () => {
-    modes.forEach((el) => el.classList.remove("active"));
-    modeEl.classList.add("active");
+modeContainer.addEventListener("click", (e) => {
+  const clicked = e.target.closest(".mode");
+  if (!clicked) return;
 
-    selectedMinutes = parseInt(modeEl.dataset.minutes);
-    selectedIncrements = parseInt(modeEl.dataset.increment);
-  })
-);
+  document
+    .querySelectorAll(".mode")
+    .forEach((el) => el.classList.remove("active"));
+
+  clicked.classList.add("active");
+  selectedMinutes = parseInt(clicked.dataset.minutes);
+  selectedIncrements = parseInt(clicked.dataset.increment);
+});
 
 startBtn.addEventListener("click", () => {
   playerOneTime = selectedMinutes * 60;
@@ -415,6 +416,17 @@ startBtn.addEventListener("click", () => {
 customTimeBtn.addEventListener("click", () => {
   timeControlPage.style.display = "none";
   customTimePage.style.display = "block";
+});
+
+customSaveBtn.addEventListener("click", () => {
+  const newMode = document.createElement("div");
+  newMode.classList.add("mode");
+  newMode.setAttribute("data-minutes", customMinutes.value);
+  newMode.setAttribute("data-increment", customIncrements.value);
+  newMode.textContent = `${customMinutes.value} min | ${customIncrements.value} sec`;
+  modeContainer.appendChild(newMode);
+  customTimePage.style.display = "none";
+  timeControlPage.style.display = "block";
 });
 
 // Registering the service worker
