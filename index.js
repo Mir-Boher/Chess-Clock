@@ -315,34 +315,36 @@ closeBtn.forEach((btn) => {
     modalOverlay.style.rotate = "0deg"; // setting modal rotate to default for player Two
   });
 });
-console.log("Hey there", saveSettings);
-saveSettings.addEventListener("click", () => {
-  const hours = parseInt(settingsHours.value) || 0;
-  const minutes = parseInt(settingsMinutes.value) || 0;
-  const seconds = parseInt(settingsSeconds.value) || 0;
-  const increment = parseInt(settingsIncrement.value) || 0;
-  const lowTimeAlert = parseInt(settingsLowTimeAlert.value) || 0;
-  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-  if (settingsTarget === "one") {
-    playerOneBgAlertToggle = bgAlertToggle.checked;
-    playerOneSoundToggle = soundToggle.checked;
-    playerOneTime = totalSeconds;
-    playerOneIncrement = increment;
-    playerOneLowTimeAlert = lowTimeAlert;
-    modeTimeOne.textContent = `${minutes} | ${increment}`;
-  } else if (settingsTarget === "two") {
-    playerTwoBgAlertToggle = bgAlertToggle.checked;
-    playerTwoSoundToggle = soundToggle.checked;
-    playerTwoTime = totalSeconds;
-    playerTwoIncrement = increment;
-    playerTwoLowTimeAlert = lowTimeAlert;
-    modeTimeTwo.textContent = `${minutes} | ${increment}`;
-  }
+if (saveSettings) {
+  saveSettings.addEventListener("click", () => {
+    const hours = parseInt(settingsHours?.value ?? 0) || 0;
+    const minutes = parseInt(settingsMinutes?.value ?? 0) || 0;
+    const seconds = parseInt(settingsSeconds?.value ?? 0) || 0;
+    const increment = parseInt(settingsIncrement?.value ?? 0) || 0;
+    const lowTimeAlert = parseInt(settingsLowTimeAlert?.value ?? 0) || 0;
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-  updateTimer();
-  modalOverlay.style.display = "none";
-});
+    if (settingsTarget === "one") {
+      playerOneBgAlertToggle = bgAlertToggle?.checked ?? playerOneBgAlertToggle;
+      playerOneSoundToggle = soundToggle?.checked ?? playerOneSoundToggle;
+      playerOneTime = totalSeconds;
+      playerOneIncrement = increment;
+      playerOneLowTimeAlert = lowTimeAlert;
+      modeTimeOne.textContent = `${minutes} | ${increment}`;
+    } else if (settingsTarget === "two") {
+      playerTwoBgAlertToggle = bgAlertToggle?.checked ?? playerTwoBgAlertToggle;
+      playerTwoSoundToggle = soundToggle?.checked ?? playerTwoSoundToggle;
+      playerTwoTime = totalSeconds;
+      playerTwoIncrement = increment;
+      playerTwoLowTimeAlert = lowTimeAlert;
+      modeTimeTwo.textContent = `${minutes} | ${increment}`;
+    }
+
+    updateTimer();
+    modalOverlay.style.display = "none";
+  });
+}
 
 function playSound(name) {
   if (!isMuted) {
@@ -418,25 +420,26 @@ customTimeBtn.addEventListener("click", () => {
   customTimePage.style.display = "block";
 });
 
-if (customSaveBtn) {
-  customSaveBtn.addEventListener("click", () => {
-    const newMode = document.createElement("div");
-    newMode.classList.add("mode");
-    newMode.setAttribute("data-minutes", customMinutes.value);
-    newMode.setAttribute("data-increment", customIncrements.value);
-    newMode.textContent = `${customMinutes.value} min | ${customIncrements.value} sec`;
-    modeContainer.appendChild(newMode);
-    customTimePage.style.display = "none";
-    timeControlPage.style.display = "block";
-  });
-}
+customSaveBtn?.addEventListener("click", () => {
+  const mins = parseInt(customMinutes?.value ?? 0) || 0;
+  const inc = parseInt(customIncrements?.value ?? 0) || 0;
+
+  const newMode = document.createElement("div");
+  newMode.classList.add("mode");
+  newMode.setAttribute("data-minutes", String(mins));
+  newMode.setAttribute("data-increment", String(inc));
+  newMode.textContent = `${mins} min | ${inc} sec`;
+  modeContainer.appendChild(newMode);
+  customTimePage.style.display = "none";
+  timeControlPage.style.display = "block";
+});
 
 // Registering the service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/service-worker.js") // Add leading slash
-      .then((registration) => {
+      .register("./service-worker.js") // Add leading slash
+      .then(() => {
         console.log("Service Worker registered successfully");
       })
       .catch((error) => {
