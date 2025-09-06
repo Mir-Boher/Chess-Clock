@@ -315,7 +315,7 @@ closeBtn.forEach((btn) => {
     modalOverlay.style.rotate = "0deg"; // setting modal rotate to default for player Two
   });
 });
-
+console.log("Hey there", saveSettings);
 saveSettings.addEventListener("click", () => {
   const hours = parseInt(settingsHours.value) || 0;
   const minutes = parseInt(settingsMinutes.value) || 0;
@@ -418,16 +418,18 @@ customTimeBtn.addEventListener("click", () => {
   customTimePage.style.display = "block";
 });
 
-customSaveBtn.addEventListener("click", () => {
-  const newMode = document.createElement("div");
-  newMode.classList.add("mode");
-  newMode.setAttribute("data-minutes", customMinutes.value);
-  newMode.setAttribute("data-increment", customIncrements.value);
-  newMode.textContent = `${customMinutes.value} min | ${customIncrements.value} sec`;
-  modeContainer.appendChild(newMode);
-  customTimePage.style.display = "none";
-  timeControlPage.style.display = "block";
-});
+if (customSaveBtn) {
+  customSaveBtn.addEventListener("click", () => {
+    const newMode = document.createElement("div");
+    newMode.classList.add("mode");
+    newMode.setAttribute("data-minutes", customMinutes.value);
+    newMode.setAttribute("data-increment", customIncrements.value);
+    newMode.textContent = `${customMinutes.value} min | ${customIncrements.value} sec`;
+    modeContainer.appendChild(newMode);
+    customTimePage.style.display = "none";
+    timeControlPage.style.display = "block";
+  });
+}
 
 // Registering the service worker
 if ("serviceWorker" in navigator) {
