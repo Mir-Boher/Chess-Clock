@@ -1,3 +1,5 @@
+import { login } from "./initialization/services/services/auth.js";
+
 const playerOne = document.getElementById("timer-component-one");
 const playerTwo = document.getElementById("timer-component-two");
 const playerOneTimer = document.getElementById("time-one");
@@ -34,6 +36,10 @@ const bgAlertToggle = document.getElementById("bg-alert-toggle");
 const customMinutes = document.getElementById("custom-time");
 const customIncrements = document.getElementById("custom-increment");
 const customSaveBtn = document.getElementById("save-custom-time-btn");
+const loginPage = document.getElementById("login-page");
+const loginBtn = document.querySelector(".btn-login");
+const emailInput = document.getElementById("login-username");
+const passwordInput = document.getElementById("login-password");
 
 // State
 let currentPlayer = null;
@@ -434,6 +440,17 @@ customSaveBtn?.addEventListener("click", () => {
   timeControlPage.style.display = "block";
 });
 
+loginBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  login(emailInput.value, passwordInput.value)
+    .then((userCredential) => {
+      loginPage.style.display = "none";
+      mainPage.style.display = "flex";
+    })
+    .catch((error) => {
+      alert("Login failed: " + error.message);
+    });
+});
 // Registering the service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

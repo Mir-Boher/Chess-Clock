@@ -20,8 +20,136 @@ body {
   background-color: var(--color-bg);
 }
 
-#main-page {
+#login-page {
+  background-color: #e8dcc8;
+  border: 4px solid #2a2a2a;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+#login-page .login-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  color: #2a2a2a;
+}
+#login-page .close-btn:hover {
+  color: #000;
+}
+#login-page h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 40px;
+  color: #2a2a2a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+#login-page .form-group {
+  margin-bottom: 25px;
+}
+#login-page .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #2a2a2a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+#login-page .form-group input[type=text],
+#login-page .form-group input[type=password] {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #2a2a2a;
+  background-color: #f5f0e8;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: #2a2a2a;
+  outline: none;
+}
+#login-page .form-group input[type=text]:focus,
+#login-page .form-group input[type=password]:focus {
+  background-color: #fff;
+}
+#login-page .checkbox-group {
+  margin: 25px 0;
   display: flex;
+  align-items: center;
+}
+#login-page .checkbox-group input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid #2a2a2a;
+}
+#login-page .checkbox-group label {
+  margin: 0;
+  cursor: pointer;
+  text-transform: none;
+  font-size: 13px;
+}
+#login-page .button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+#login-page .button-group button {
+  padding: 15px 20px;
+  border: 3px solid #2a2a2a;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+#login-page .button-group .login-btn-cancel {
+  background-color: #e8dcc8;
+  color: #2a2a2a;
+}
+#login-page .button-group .login-btn-cancel:hover {
+  background-color: #d4c4ac;
+}
+#login-page .button-group .btn-login {
+  background-color: #2a2a2a;
+  color: #e8dcc8;
+}
+#login-page .button-group .btn-login:hover {
+  background-color: #000;
+}
+#login-page .forgot-password {
+  text-align: center;
+  margin-top: 20px;
+}
+#login-page .forgot-password .forgot-password a {
+  color: #2a2a2a;
+  text-decoration: none;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+#login-page .forgot-password .forgot-password a:hover {
+  text-decoration: underline;
+}
+
+#main-page {
+  display: none;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
@@ -64,11 +192,11 @@ body {
   cursor: pointer;
 }
 #main-page .setting-bar .pause-icon {
-  flex: 1;
+  margin-right: auto;
   display: none;
 }
 #main-page .setting-bar .resume-icon {
-  flex: 1;
+  margin-right: auto;
 }
 #main-page .setting-bar .volume-off-icon {
   display: none;
