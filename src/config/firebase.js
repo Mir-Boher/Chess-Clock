@@ -1,11 +1,3 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 const firebaseConfig = {
   apiKey: "AIzaSyAqFa4YGNBA9ETE31smiNcFEyAtOWXU77c",
   authDomain: "chess-clock-5a4ba.firebaseapp.com",
@@ -18,8 +10,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+if (!firebase.apps || !firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const auth = firebase.auth();
 const db = firebase.firestore();
 
-export const auth = getAuth(app);
+window.auth = auth;
+window.db = db;
+
+if (!window.firebase) {
+  console.error("Firebase SDK not loaded!");
+}

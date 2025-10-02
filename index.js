@@ -1,4 +1,5 @@
-import { login } from "./initialization/services/services/auth.js";
+// import { login } from "./initialization/services/services/auth.js";
+// import { signup } from "./initialization/services/services/auth.js";
 
 const playerOne = document.getElementById("timer-component-one");
 const playerTwo = document.getElementById("timer-component-two");
@@ -38,8 +39,14 @@ const customIncrements = document.getElementById("custom-increment");
 const customSaveBtn = document.getElementById("save-custom-time-btn");
 const loginPage = document.getElementById("login-page");
 const loginBtn = document.querySelector(".btn-login");
-const emailInput = document.getElementById("login-username");
-const passwordInput = document.getElementById("login-password");
+const loginEmail = document.getElementById("login-username");
+const loginPassword = document.getElementById("login-password");
+const signupPage = document.getElementById("signup-page");
+const signupForm = document.getElementById("signup-form");
+const signupEmail = document.getElementById("signup-email");
+const signupPassword = document.getElementById("signup-password");
+const signupUsername = document.getElementById("signup-username");
+const signupBtn = document.querySelector(".btn-signup");
 
 // State
 let currentPlayer = null;
@@ -440,9 +447,23 @@ customSaveBtn?.addEventListener("click", () => {
   timeControlPage.style.display = "block";
 });
 
+signupBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  signup(signupEmail.value, signupPassword.value, signupUsername.value)
+    .then((userCredential) => {
+      alert("Signup Successful!");
+      mainPage.style.display = "flex";
+      signupPage.style.display = "none";
+    })
+    .catch((error) => {
+      alert("Signup failed: " + error.message);
+    });
+});
+
 loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  login(emailInput.value, passwordInput.value)
+  login(loginEmail.value, loginPassword.value)
     .then((userCredential) => {
       loginPage.style.display = "none";
       mainPage.style.display = "flex";
@@ -451,6 +472,7 @@ loginBtn.addEventListener("click", (e) => {
       alert("Login failed: " + error.message);
     });
 });
+
 // Registering the service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

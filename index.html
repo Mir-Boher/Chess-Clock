@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Firebase App (core) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <!-- Add only the SDKs you need: -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="src/config/firebase.js"></script>
+    <script src="initialization/services/services/auth.js"></script>
     <!-- ...add more as needed -->
     <meta
       http-equiv="Cache-Control"
@@ -33,6 +35,75 @@
   </head>
 
   <body>
+    <section id="signup-page">
+      <button class="close-btn">✖</button>
+      <h1>Sign Up</h1>
+
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="signup-username" name="username" required />
+          <div class="error-message" id="usernameError">
+            Username must be at least 3 characters
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="signup-email" name="email" required />
+          <div class="error-message" id="emailError">
+            Please enter a valid email
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="signup-password"
+            name="password"
+            required
+          />
+          <div class="error-message" id="passwordError">
+            Password must be at least 6 characters
+          </div>
+        </div>
+
+        <!-- <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+          <div class="error-message" id="confirmPasswordError">
+            Passwords do not match
+          </div>
+        </div> -->
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" name="terms" required />
+          <label for="terms"
+            >I agree to the
+            <a href="#" onclick="showTerms()">Terms of Service</a> and
+            <a href="#" onclick="showPrivacy()">Privacy Policy</a></label
+          >
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn-cancel" onclick="cancelSignup()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-signup">Sign Up</button>
+        </div>
+      </form>
+
+      <div class="login-link">
+        Already have an account? <a href="#" onclick="goToLogin()">Login</a>
+      </div>
+    </section>
+
     <section id="login-page">
       <button class="login-close-btn">✖</button>
       <h1>Login</h1>
@@ -99,6 +170,7 @@
         </span>
       </div>
     </section>
+
     <section class="modal-overlay" id="modal-overlay">
       <div class="modal" id="modal">
         <button class="close-btn close" id="close-btn">&times;</button>
@@ -205,6 +277,7 @@
         </div>
       </div>
     </section>
+
     <section id="time-control-page">
       <div class="page-header">
         <span class="material-symbols-outlined arrow-back arrow-back-one">
@@ -234,6 +307,7 @@
       </div>
       <div class="btn-container"><button id="start-btn">Start</button></div>
     </section>
+
     <section id="custom-time-page">
       <div class="page-header">
         <span class="material-symbols-outlined arrow-back arrow-back-two">
