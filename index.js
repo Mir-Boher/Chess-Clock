@@ -47,6 +47,8 @@ const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
 const signupUsername = document.getElementById("signup-username");
 const signupBtn = document.querySelector(".btn-signup");
+const showSignupPage = document.getElementById("show-signup");
+const showLoginPage = document.getElementById("show-login");
 
 // State
 let currentPlayer = null;
@@ -447,6 +449,16 @@ customSaveBtn?.addEventListener("click", () => {
   timeControlPage.style.display = "block";
 });
 
+showSignupPage.addEventListener("click", () => {
+  loginPage.style.display = "none";
+  signupPage.style.display = "block";
+});
+
+showLoginPage.addEventListener("click", () => {
+  loginPage.style.display = "block";
+  signupPage.style.display = "none";
+});
+
 signupBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -463,13 +475,46 @@ signupBtn.addEventListener("click", (e) => {
 
 loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  login(loginEmail.value, loginPassword.value)
-    .then((userCredential) => {
+  const email = loginEmail.value.trim();
+  const pass = loginPassword.value;
+  if (!email || !pass) {
+    alert("Enter email and password.");
+    return;
+  }
+
+  login(email, pass)
+    .then(async (userCredential) => {
+      const uid = userCredential.user.uid;
+      const userDoc = await firebase.firestore().doc(`users/${uid}`).get();
+
+      if (!userDoc.exists) {
+        await firebase.auth().signOut();
+        alert("Account not fully registered. Please sign up first.");
+        loginPage.style.display = "none";
+        signupPage.style.display = "block";
+        return;
+      }
+      //Success: show Main Page
       loginPage.style.display = "none";
+      signupPage.style.display = "none";
       mainPage.style.display = "flex";
     })
     .catch((error) => {
-      alert("Login failed: " + error.message);
+      switch (error.code) {
+        case "auth/user-not-found":
+          alert("No account found. Please sign up.");
+          loginPage.style.display = "none";
+          signupPage.style.display = "block";
+          break;
+        case "auth/wrong-password":
+          alert("Incorrect password.");
+          break;
+        case "auth/too-many-requests":
+          alert("Too many attempts. Try again later.");
+          break;
+        default:
+          alert("Login failed: " + error.message);
+      }
     });
 });
 

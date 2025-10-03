@@ -21,7 +21,7 @@ body {
 }
 
 #signup-page {
-  display: block;
+  display: none;
   background-color: #e8dcc8;
   border: 4px solid #2a2a2a;
   padding: 40px;
@@ -190,9 +190,14 @@ body {
   .error-message.show {
     display: block;
   }
+  #show-login {
+    border-bottom: 1px solid black;
+    cursor: pointer;
+  }
 }
 
 #login-page {
+  display: block;
   background-color: #e8dcc8;
   border: 4px solid #2a2a2a;
   padding: 40px;
@@ -203,7 +208,6 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: none;
 
   .login-close-btn {
     position: absolute;
@@ -331,6 +335,14 @@ body {
     .forgot-password a:hover {
       text-decoration: underline;
     }
+  }
+  .signup-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  #show-signup {
+    border-bottom: 1px solid black;
+    cursor: pointer;
   }
 }
 
