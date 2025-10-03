@@ -197,7 +197,7 @@ body {
 }
 
 #login-page {
-  display: block;
+  display: none;
   background-color: #e8dcc8;
   border: 4px solid #2a2a2a;
   padding: 40px;
@@ -679,6 +679,7 @@ input:checked + .slider:before {
 #time-control-page {
   display: none;
   position: relative;
+
   .page-header {
     display: flex;
     gap: 1.5rem;
@@ -690,6 +691,28 @@ input:checked + .slider:before {
     }
     p {
       font-weight: 600;
+      margin-right: auto;
+    }
+    .material-symbols-outlined {
+      cursor: pointer;
+    }
+    .profile-container {
+      display: none;
+      position: absolute;
+      right: 17px;
+      top: 70px;
+      width: 150px;
+      background-color: var(--color-bg);
+      border: 2px solid black;
+      cursor: pointer;
+
+      .logout-btn {
+        padding: 1rem;
+      }
+      .logout-btn:hover {
+        background-color: var(--color-text);
+        color: var(--color-bg);
+      }
     }
   }
   .title {

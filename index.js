@@ -1,6 +1,8 @@
 // import { login } from "./initialization/services/services/auth.js";
 // import { signup } from "./initialization/services/services/auth.js";
 
+// const { default: firebase } = require("firebase/compat/app");
+
 const playerOne = document.getElementById("timer-component-one");
 const playerTwo = document.getElementById("timer-component-two");
 const playerOneTimer = document.getElementById("time-one");
@@ -49,6 +51,48 @@ const signupUsername = document.getElementById("signup-username");
 const signupBtn = document.querySelector(".btn-signup");
 const showSignupPage = document.getElementById("show-signup");
 const showLoginPage = document.getElementById("show-login");
+const profileBtn = document.querySelector(".profile-setting");
+const profileContainer = document.querySelector(".profile-container");
+const playerName = document.querySelector(".title");
+const logoutBtn = document.querySelector(".logout-btn");
+
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (user) {
+    const docSnap = await firebase.firestore().doc(`users/${user.uid}`).get();
+    if (docSnap.exists) {
+      mainPage.style.display = "flex";
+      loginPage.style.display = "none";
+      signupPage.style.display = "none";
+      timeControlPage.style.display = "none";
+
+      const username = docSnap.data().username;
+      playerName.textContent = username;
+    } else {
+      await firebase.auth().signOut();
+      mainPage.style.display = "none";
+      loginPage.style.display = "none";
+      timeControlPage.style.display = "none";
+      signupPage.style.display = "block";
+    }
+  } else {
+    mainPage.style.display = "none";
+    signupPage.style.display = "none";
+    timeControlPage.style.display = "none";
+    loginPage.style.display = "block";
+  }
+});
+
+logoutBtn.addEventListener("click", () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      alert("You have been logged out!");
+    })
+    .catch((error) => {
+      alert("Logout failed: " + error.message);
+    });
+});
 
 // State
 let currentPlayer = null;
@@ -112,9 +156,11 @@ function startTurn(nextPlayer) {
         playSound("low");
       }
       if (
-        playerOneTime > 0 &&
-        playerOneBgAlertToggle &&
-        playerOneTime <= playerOneLowTimeAlert
+        showLowTimeAlert(
+          playerOneTime,
+          playerOneBgAlertToggle,
+          playerOneLowTimeAlert
+        )
       ) {
         playerOne.classList.add("blink");
       }
@@ -294,6 +340,8 @@ resetBtn.addEventListener("click", () => {
   playerOneMoveCount = 0;
   playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
   playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
+  modeTimeOne.textContent = `${selectedMinutes} | ${selectedIncrements}`;
+  modeTimeTwo.textContent = `${selectedMinutes} | ${selectedIncrements}`;
   resumeBtn.style.display = "block";
   pauseBtn.style.display = "none";
   playerOne.style.background = "";
@@ -449,6 +497,15 @@ customSaveBtn?.addEventListener("click", () => {
   timeControlPage.style.display = "block";
 });
 
+profileBtn.addEventListener("click", () => {
+  console.log("Hey you have clicked me.");
+  if (profileContainer.style.display == "block") {
+    profileContainer.style.display = "none";
+  } else {
+    profileContainer.style.display = "block";
+  }
+});
+
 showSignupPage.addEventListener("click", () => {
   loginPage.style.display = "none";
   signupPage.style.display = "block";
@@ -517,6 +574,10 @@ loginBtn.addEventListener("click", (e) => {
       }
     });
 });
+
+function showLowTimeAlert(time, bgAlertToggle, lowTimeAlert) {
+  return time > 0 && bgAlertToggle && time <= lowTimeAlert;
+}
 
 // Registering the service worker
 if ("serviceWorker" in navigator) {
