@@ -35,6 +35,34 @@
   </head>
 
   <body>
+    <section id="splash-screen">
+      <div class="splash-content">
+        <div class="splash-logo">
+          <div class="chess-piece">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <!-- Knight piece -->
+              <path d="M30,85 L70,85 L65,75 L35,75 Z" fill="currentColor" />
+              <path d="M35,75 L65,75 L60,65 L40,65 Z" fill="currentColor" />
+              <path
+                d="M40,65 C40,65 42,55 45,50 L35,50 C35,50 30,55 32,62 L40,65 Z"
+                fill="currentColor"
+              />
+              <path
+                d="M45,50 C45,50 50,45 52,40 C54,35 55,30 52,25 L48,28 C48,28 46,30 45,33 C44,36 42,38 40,35 C38,32 40,28 42,25 L40,23 C40,23 35,28 35,35 C35,42 40,48 45,50 Z"
+                fill="currentColor"
+              />
+              <circle cx="52" cy="26" r="3" fill="currentColor" />
+            </svg>
+          </div>
+          <h1>Detroit</h1>
+          <p class="splash-tagline">Chess Timer</p>
+        </div>
+        <div class="splash-loader">
+          <div class="loader-bar"></div>
+        </div>
+      </div>
+    </section>
+
     <section id="signup-page">
       <button class="close-btn">✖</button>
       <h1>Sign Up</h1>
@@ -109,7 +137,7 @@
       <h1>Login</h1>
       <form id="loginForm">
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">Email</label>
           <input type="text" id="login-username" name="username" required />
         </div>
 
@@ -299,8 +327,8 @@
         <span class="material-symbols-outlined"> add </span>
         New Custom Time
       </div>
+      <p class="presets">Presets</p>
       <div class="mode-container">
-        <p>Presets</p>
         <div class="mode" data-minutes="1" data-increment="0">1 min</div>
         <div class="mode" data-minutes="1" data-increment="1">
           1 min | 1 sec

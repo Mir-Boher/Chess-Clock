@@ -1,8 +1,3 @@
-// import { login } from "./initialization/services/services/auth.js";
-// import { signup } from "./initialization/services/services/auth.js";
-
-// const { default: firebase } = require("firebase/compat/app");
-
 const playerOne = document.getElementById("timer-component-one");
 const playerTwo = document.getElementById("timer-component-two");
 const playerOneTimer = document.getElementById("time-one");
@@ -55,6 +50,37 @@ const profileBtn = document.querySelector(".profile-setting");
 const profileContainer = document.querySelector(".profile-container");
 const playerName = document.querySelector(".title");
 const logoutBtn = document.querySelector(".logout-btn");
+const splashScreenPage = document.getElementById("splash-screen");
+
+async function loadCustomTimes() {
+  // Remove previously rendered custom items to avoid duplicates
+  document.querySelectorAll(".mode.custom").forEach((el) => el.remove());
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  try {
+    const snap = await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("customTimes")
+      .orderBy("createdAt", "desc")
+      .get();
+
+    snap.forEach((doc) => {
+      const data = doc.data();
+      const newMode = document.createElement("div");
+      newMode.classList.add("mode", "custom"); // mark as custom
+      newMode.setAttribute("data-minutes", String(data.minutes));
+      newMode.setAttribute("data-increment", String(data.increment));
+      newMode.textContent = `${data.minutes} min | ${data.increment} sec`;
+      modeContainer.appendChild(newMode);
+    });
+  } catch (err) {
+    console.error("Failed to load custom times:", err);
+  }
+}
 
 firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
@@ -67,18 +93,24 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
       const username = docSnap.data().username;
       playerName.textContent = username;
+
+      await loadCustomTimes();
+
+      splashScreenPage.style.display = "none";
     } else {
       await firebase.auth().signOut();
       mainPage.style.display = "none";
       loginPage.style.display = "none";
       timeControlPage.style.display = "none";
       signupPage.style.display = "block";
+      splashScreenPage.style.display = "none";
     }
   } else {
     mainPage.style.display = "none";
     signupPage.style.display = "none";
     timeControlPage.style.display = "none";
     loginPage.style.display = "block";
+    splashScreenPage.style.display = "none";
   }
 });
 
@@ -87,7 +119,7 @@ logoutBtn.addEventListener("click", () => {
     .auth()
     .signOut()
     .then(() => {
-      alert("You have been logged out!");
+      // alert("You have been logged out!");
     })
     .catch((error) => {
       alert("Logout failed: " + error.message);
@@ -435,7 +467,7 @@ arrowBackBtns.forEach((btn) => {
       mainPage.style.display = "flex";
       timeControlPage.style.display = "none";
     } else if (e.target.classList.contains("arrow-back-two")) {
-      timeControlPage.style.display = "block";
+      timeControlPage.style.display = "flex";
       customTimePage.style.display = "none";
     }
   });
@@ -446,7 +478,7 @@ timerBtn.addEventListener("click", () => {
   resumeBtn.style.display = "block";
   clearInterval(timer);
   mainPage.style.display = "none";
-  timeControlPage.style.display = "block";
+  timeControlPage.style.display = "flex";
 });
 
 modeContainer.addEventListener("click", (e) => {
@@ -483,9 +515,32 @@ customTimeBtn.addEventListener("click", () => {
   customTimePage.style.display = "block";
 });
 
-customSaveBtn?.addEventListener("click", () => {
+customSaveBtn?.addEventListener("click", async () => {
   const mins = parseInt(customMinutes?.value ?? 0) || 0;
   const inc = parseInt(customIncrements?.value ?? 0) || 0;
+
+  const user = firebase.auth().currentUser;
+  customSaveBtn.disabled = true;
+  customSaveBtn.textContent = "Saving...";
+  if (user) {
+    try {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("customTimes")
+        .add({
+          minutes: mins,
+          increment: inc,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    } catch (error) {
+      alert("Failed to save custom time: " + error.message);
+    } finally {
+      customSaveBtn.disabled = false;
+      customSaveBtn.textContent = "Save";
+    }
+  }
 
   const newMode = document.createElement("div");
   newMode.classList.add("mode");
@@ -494,11 +549,10 @@ customSaveBtn?.addEventListener("click", () => {
   newMode.textContent = `${mins} min | ${inc} sec`;
   modeContainer.appendChild(newMode);
   customTimePage.style.display = "none";
-  timeControlPage.style.display = "block";
+  timeControlPage.style.display = "flex";
 });
 
 profileBtn.addEventListener("click", () => {
-  console.log("Hey you have clicked me.");
   if (profileContainer.style.display == "block") {
     profileContainer.style.display = "none";
   } else {
@@ -518,6 +572,8 @@ showLoginPage.addEventListener("click", () => {
 
 signupBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  signupBtn.disabled = true;
+  signupBtn.textContent = "Signing Up...";
 
   signup(signupEmail.value, signupPassword.value, signupUsername.value)
     .then((userCredential) => {
@@ -527,17 +583,25 @@ signupBtn.addEventListener("click", (e) => {
     })
     .catch((error) => {
       alert("Signup failed: " + error.message);
+    })
+    .finally(() => {
+      signupBtn.disabled = false;
+      signupBtn.textContent = "Sign Up";
     });
 });
 
 loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
+
   const email = loginEmail.value.trim();
   const pass = loginPassword.value;
   if (!email || !pass) {
     alert("Enter email and password.");
     return;
   }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Logging in...";
 
   login(email, pass)
     .then(async (userCredential) => {
@@ -572,6 +636,10 @@ loginBtn.addEventListener("click", (e) => {
         default:
           alert("Login failed: " + error.message);
       }
+    })
+    .finally(() => {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
     });
 });
 
