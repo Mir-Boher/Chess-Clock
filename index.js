@@ -185,6 +185,7 @@ function startTurn(nextPlayer) {
         playerOneTime <= playerOneLowTimeAlert &&
         playerOneSoundToggle
       ) {
+        console.log("The sound is playing..." + playerOneSoundToggle);
         playSound("low");
       }
       if (
@@ -227,7 +228,11 @@ function startTurn(nextPlayer) {
         playerOne.classList.remove("blink");
         clearInterval(timer);
       }
-      if (playerOneTime > 0 && playerOneTime <= playerOneLowTimeAlert) {
+      if (
+        playerOneTime > 0 &&
+        playerOneTime <= playerOneLowTimeAlert &&
+        playerOneSoundToggle
+      ) {
         playSound("low");
       }
       if (
@@ -243,7 +248,11 @@ function startTurn(nextPlayer) {
         playerTwo.classList.remove("blink");
         clearInterval(timer);
       }
-      if (playerTwoTime > 0 && playerTwoTime <= playerTwoLowTimeAlert) {
+      if (
+        playerTwoTime > 0 &&
+        playerTwoTime <= playerTwoLowTimeAlert &&
+        playerTwoSoundToggle
+      ) {
         playSound("low");
       }
       if (
@@ -422,7 +431,7 @@ if (saveSettings) {
 
     if (settingsTarget === "one") {
       playerOneBgAlertToggle = bgAlertToggle?.checked ?? playerOneBgAlertToggle;
-      playerOneSoundToggle = soundToggle?.checked ?? playerOneSoundToggle;
+      playerOneSoundToggle = soundToggle.checked;
       playerOneTime = totalSeconds;
       playerOneIncrement = increment;
       playerOneLowTimeAlert = lowTimeAlert;
@@ -435,6 +444,8 @@ if (saveSettings) {
       playerTwoLowTimeAlert = lowTimeAlert;
       modeTimeTwo.textContent = `${minutes} | ${increment}`;
     }
+    console.log("playerOneSoundToggle:", playerOneSoundToggle);
+    console.log("playerTwoSoundToggle:", playerTwoSoundToggle);
 
     updateTimer();
     modalOverlay.style.display = "none";
