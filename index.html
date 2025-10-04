@@ -17,6 +17,14 @@
     />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <link rel="manifest" href="/manifest.json?v=5" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js?v=5");
+        });
+      }
+    </script>
     <title>Chess Clock</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#222222" />
@@ -31,6 +39,7 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     />
     <link rel="stylesheet" href="index.css" />
+
     <script src="index.js" defer></script>
   </head>
 

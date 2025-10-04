@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v5";
 const CACHE_NAME = `chess-clock-${CACHE_VERSION}`;
 
 const CORE_ASSETS = [
