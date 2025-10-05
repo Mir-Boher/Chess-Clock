@@ -858,9 +858,6 @@ input:checked + .slider:before {
       padding: 0.8rem 0;
       cursor: pointer;
     }
-    .mode:first-child {
-      padding-top: 0;
-    }
     .active {
       background-color: var(--color-text);
       color: var(--color-bg);
@@ -967,6 +964,11 @@ input:checked + .slider:before {
       cursor: pointer;
     }
   }
+}
+
+.active-turn-bg {
+  background-color: var(--color-text);
+  color: var(--color-bg);
 }
 
 @media (max-width: 500px) {

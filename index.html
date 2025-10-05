@@ -17,14 +17,6 @@
     />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <link rel="manifest" href="/manifest.json?v=5" />
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/service-worker.js?v=5");
-        });
-      }
-    </script>
     <title>Chess Clock</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#222222" />
@@ -351,7 +343,9 @@
         </div>
         <div class="mode" data-minutes="5" data-increment="0">5 min</div>
       </div>
-      <div class="btn-container"><button id="start-btn">Start</button></div>
+      <div class="btn-container">
+        <button id="start-btn">Start</button>
+      </div>
     </section>
 
     <section id="custom-time-page">

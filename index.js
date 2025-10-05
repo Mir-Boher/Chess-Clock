@@ -284,6 +284,8 @@ playerOne.addEventListener("click", (e) => {
       playerOneMoves.textContent = `Moves: ${++playerOneMoveCount}`;
     }
     movesSwitch = true;
+
+    setActiveTurnBg("two");
     startTurn("two");
   }
 });
@@ -296,11 +298,14 @@ playerTwo.addEventListener("click", (e) => {
     resumeBtn.style.display = "none";
     pauseBtn.style.display = "block";
     playerTwo.classList.remove("blink");
+
     playSound("click");
     if (movesSwitch === true) {
       playerTwoMoves.textContent = `Moves: ${++playerTwoMoveCount}`;
     }
     movesSwitch = true;
+
+    setActiveTurnBg("one");
     startTurn("one");
   }
 });
@@ -350,8 +355,14 @@ resumeBtn.addEventListener("click", () => {
   if (currentPlayer === null) {
     movesSwitch = true;
     startTurn("two");
+    setActiveTurnBg("two");
   } else {
     startTurn(currentPlayer);
+    if (currentPlayer === "one") {
+      setActiveTurnBg("one");
+    } else {
+      setActiveTurnBg("two");
+    }
   }
   playSound("resume");
 });
@@ -372,11 +383,11 @@ resetBtn.addEventListener("click", () => {
   playerTwo.classList.remove("blink");
   playerOne.classList.remove("blink");
   currentPlayer = null;
+  movesSwitch = false;
   playerOneTime = selectedMinutes * 60;
   playerOneIncrement = selectedIncrements;
   playerTwoTime = selectedMinutes * 60;
   playerTwoIncrement = selectedIncrements;
-  movesSwitch = false;
   playerTwoMoveCount = 0;
   playerOneMoveCount = 0;
   playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
@@ -387,6 +398,8 @@ resetBtn.addEventListener("click", () => {
   pauseBtn.style.display = "none";
   playerOne.style.background = "";
   playerTwo.style.background = "";
+  playerOne.classList.remove("active-turn-bg");
+  playerTwo.classList.remove("active-turn-bg");
   updateTimer();
 });
 
@@ -506,6 +519,8 @@ modeContainer.addEventListener("click", (e) => {
 });
 
 startBtn.addEventListener("click", () => {
+  mainPage.style.display = "flex";
+  timeControlPage.style.display = "none";
   playerOneTime = selectedMinutes * 60;
   playerTwoTime = selectedMinutes * 60;
   playerOneIncrement = selectedIncrements;
@@ -516,9 +531,16 @@ startBtn.addEventListener("click", () => {
   playerOneMoveCount = 0;
   playerOneMoves.textContent = `Moves: ${playerOneMoveCount}`;
   playerTwoMoves.textContent = `Moves: ${playerTwoMoveCount}`;
+  currentPlayer = null;
+  movesSwitch = false;
+  playerOne.classList.remove("active-turn-bg");
+  playerTwo.classList.remove("active-turn-bg");
+
+  document
+    .querySelectorAll(".mode")
+    .forEach((el) => el.classList.remove("active"));
+
   updateTimer();
-  mainPage.style.display = "flex";
-  timeControlPage.style.display = "none";
 });
 
 customTimeBtn.addEventListener("click", () => {
@@ -656,6 +678,11 @@ loginBtn.addEventListener("click", (e) => {
 
 function showLowTimeAlert(time, bgAlertToggle, lowTimeAlert) {
   return time > 0 && bgAlertToggle && time <= lowTimeAlert;
+}
+
+function setActiveTurnBg(turn) {
+  playerOne.classList.toggle("active-turn-bg", turn === "one");
+  playerTwo.classList.toggle("active-turn-bg", turn === "two");
 }
 
 // Registering the service worker

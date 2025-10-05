@@ -807,9 +807,6 @@ input:checked + .slider:before {
   padding: 0.8rem 0;
   cursor: pointer;
 }
-#time-control-page .mode-container .mode:first-child {
-  padding-top: 0;
-}
 #time-control-page .mode-container .active {
   background-color: var(--color-text);
   color: var(--color-bg);
@@ -907,6 +904,11 @@ input:checked + .slider:before {
   font-weight: 600;
   padding: 0.8rem 0;
   cursor: pointer;
+}
+
+.active-turn-bg {
+  background-color: var(--color-text);
+  color: var(--color-bg);
 }
 
 @media (max-width: 500px) {
