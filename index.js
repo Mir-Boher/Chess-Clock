@@ -148,9 +148,9 @@ let playerOneSoundToggle = true;
 let playerTwoSoundToggle = true;
 
 const sounds = {
-  click: new Audio("assets/sounds/click.wav"),
+  click: new Audio("assets/sounds/clicktimer.wav"),
   resume: new Audio("assets/sounds/resume.wav"),
-  low: new Audio("assets/sounds/femalelow.wav"),
+  low: new Audio("assets/sounds/nigger.wav"),
 };
 
 // Config: set to true to show the next player's timer decrement immediately (no 1s visual delay)
@@ -555,6 +555,7 @@ customSaveBtn?.addEventListener("click", async () => {
   const user = firebase.auth().currentUser;
   customSaveBtn.disabled = true;
   customSaveBtn.textContent = "Saving...";
+
   if (user) {
     try {
       await firebase

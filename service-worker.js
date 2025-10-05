@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v6";
+const CACHE_VERSION = "v8";
 const CACHE_NAME = `chess-clock-${CACHE_VERSION}`;
 
 const CORE_ASSETS = [
@@ -13,7 +13,7 @@ const CORE_ASSETS = [
   // sounds
   "/assets/sounds/click.wav",
   "/assets/sounds/resume.wav",
-  "/assets/sounds/femalelow.wav",
+  "/assets/sounds/nigger.wav",
 ];
 
 // Install: cache core
